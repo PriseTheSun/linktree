@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - Meu Portfólio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .game-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .star-rating i {
+            color: #d1d5db;
+        }
+
+        .star-rating i.filled {
+            color: #f59e0b;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Botão Voltar -->
+    <div class="fixed top-4 left-4 z-20">
+        <a href="../index.html"
+            class="flex items-center px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            <i class="fas fa-arrow-left mr-3"></i>
+            <span class="font-medium">Voltar ao Menu</span>
+        </a>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mx-auto px-4 py-12 max-w-6xl">
+        <!-- Cabeçalho -->
+        <header class="mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Games que Joguei</h1>
+            <div class="h-1.5 w-32 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full mb-6"></div>
+            <p class="text-lg text-gray-700">Clique em qualquer jogo para ver detalhes e minha avaliação</p>
+        </header>
+
+        <!-- Grid de Games -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="games-container">
+            <!-- Games serão carregados via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="game-modal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-auto">
+            <div class="p-8">
+                <!-- Cabeçalho do Modal -->
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-2xl font-bold text-gray-900">Detalhes do Jogo</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Conteúdo do Modal -->
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Imagem e Avaliação -->
+                    <div class="lg:w-2/5">
+                        <img id="modal-image" src="" alt="Capa do jogo"
+                            class="w-full h-64 object-cover rounded-xl shadow-lg mb-6">
+
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">Minha Avaliação</h4>
+                            <div id="modal-rating" class="star-rating text-2xl mb-4"></div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Gênero</p>
+                                <span id="modal-genre"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Plataforma</p>
+                                <span id="modal-platform"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Ano de Lançamento</p>
+                                <span id="modal-year"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descrição e Review -->
+                    <div class="lg:w-3/5">
+                        <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-4"></h3>
+                        <p id="modal-description" class="text-gray-700 mb-8"></p>
+
+                        <div class="mb-8">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Minhas Impressões</h4>
+                            <p id="modal-review" class="text-gray-700 mb-6"></p>
+
+                            <div>
+                                <h5 class="text-lg font-semibold text-gray-900 mb-3">O que mais gostei</h5>
+                                <ul id="modal-likes" class="text-gray-700 space-y-2"></ul>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-200">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Recomendação</h4>
+                            <p id="modal-recommendation" class="text-gray-700"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Dados dos games
+        const games = [
+            {
+                id: 1,
+                title: "The Legend of Zelda: Breath of the Wild",
+                description: "Um marco para jogos de mundo aberto, oferecendo liberdade sem precedentes para explorar o reino de Hyrule. A física interativa e os sistemas ambientais criam uma experiência única a cada jogada.",
+                review: "A liberdade oferecida ao jogador é revolucionária. Pode-se escalar quase qualquer superfície, e as interações com o ambiente são surpreendentemente profundas. A sensação de descoberta é constante.",
+                likes: [
+                    "Liberdade de exploração total",
+                    "Sistemas de física interconectados",
+                    "Quebra-cabeças criativos",
+                    "Arte visual impressionante",
+                    "Trilha sonora atmosférica"
+                ],
+                recommendation: "Recomendado para quem valoriza exploração e descoberta. A abordagem não-linear pode ser intimidante no início, mas a recompensa é uma das experiências mais imersivas em jogos.",
+                genre: "Ação/Aventura",
+                platform: "Nintendo Switch",
+                year: "2017",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 2,
+                title: "Portal 2",
+                description: "Sequel do aclamado jogo de quebra-cabeças em primeira pessoa, expandindo o conceito de portais com novos elementos e uma campanha cooperativa excepcional.",
+                review: "O humor afiado de GLaDOS continua brilhante, e os novos personagens adicionam camadas à narrativa. Os quebra-cabeças são engenhosos sem serem frustrantes, e a cooperação é perfeitamente implementada.",
+                likes: [
+                    "Humor inteligente e afiado",
+                    "Quebra-cabeças criativos",
+                    "Campanha cooperativa excelente",
+                    "Narrativa envolvente",
+                    "Personagens memoráveis"
+                ],
+                recommendation: "Perfeito para quem gosta de quebra-cabeças e humor negro. A cooperação oferece uma experiência social única que poucos jogos conseguem igualar.",
+                genre: "Quebra-cabeças",
+                platform: "PC/PS3/Xbox 360",
+                year: "2011",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1585504198191-3d12d3ccd6ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                title: "Hollow Knight",
+                description: "Metroidvania com arte hand-drawn que se passa em Hallownest, um reino subterrâneo em ruínas repleto de criaturas, segredos e desafios.",
+                review: "A atmosfera melancólica e o design de som imersivo criam um mundo que parece vivo. A dificuldade é significativa, mas a sensação de superação ao derrotar um chefe é extremamente satisfatória.",
+                likes: [
+                    "Arte hand-drawn deslumbrante",
+                    "Exploração recompensadora",
+                    "Combate desafiador mas justo",
+                    "Atmosfera imersiva",
+                    "Trilha sonora memorável"
+                ],
+                recommendation: "Ideal para fãs de desafios e exploração. A curva de aprendizado é íngreme, mas o sentimento de progressão é muito gratificante.",
+                genre: "Metroidvania",
+                platform: "PC/Switch/PS4/Xbox One",
+                year: "2017",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 4,
+                title: "Stardew Valley",
+                description: "Simulador de fazenda inspirado em Harvest Moon, onde você herda uma fazenda decadente e decide como reconstruí-la e viver sua vida.",
+                review: "Surpreendentemente profundo e viciante. O que começa como um simples simulador de fazenda se revela um jogo sobre comunidade, propósito e vida. A personalização é extensa e significativa.",
+                likes: [
+                    "Gameplay relaxante e meditativo",
+                    "Personalização extensa",
+                    "Sistema de relacionamentos rico",
+                    "Atualizações constantes",
+                    "Música calmante"
+                ],
+                recommendation: "Excelente para momentos de relaxamento ou para quem busca uma experiência acolhedora. Pode consumir muitas horas sem que se perceba.",
+                genre: "Simulação/RPG",
+                platform: "PC/Mobile/Consoles",
+                year: "2016",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 5,
+                title: "Celeste",
+                description: "Jogo de plataforma desafiador que conta a história de Madeline enquanto ela escala a montanha Celeste, lidando com ansiedade e autoaceitação.",
+                review: "Os controles são precisos e responsivos, essencial para um jogo tão difícil. A narrativa sobre saúde mental é tratada com sensibilidade, e a trilha sonora complementa perfeitamente a jornada emocional.",
+                likes: [
+                    "Controles precisos e responsivos",
+                    "Narrativa emocionalmente poderosa",
+                    "Trilha sonora excelente",
+                    "Design de nível criativo",
+                    "Modo Assist para acessibilidade"
+                ],
+                recommendation: "Recomendado para quem gosta de desafios de plataforma. O modo Assist torna acessível para todos os níveis de habilidade.",
+                genre: "Plataforma",
+                platform: "PC/Switch/PS4/Xbox One",
+                year: "2018",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 6,
+                title: "Disco Elysium",
+                description: "RPG investigativo onde você é um detetive com amnésia tentando resolver um caso enquanto reconstrói sua própria identidade.",
+                review: "A escrita é simplesmente excepcional. Cada diálogo é uma obra de arte, e as escolhas realmente importam. O sistema de habilidades que conversam com você é uma ideia brilhante.",
+                likes: [
+                    "Escrita de qualidade literária",
+                    "Sistema de habilidades único",
+                    "Mundo detalhado e vivo",
+                    "Personagens complexos",
+                    "Arte distinta e atmosférica"
+                ],
+                recommendation: "Essencial para quem valoriza narrativa em jogos. A leitura extensa pode não agradar a todos, mas a recompensa é uma experiência única.",
+                genre: "RPG/Investigação",
+                platform: "PC/PS4/Xbox One/Switch",
+                year: "2019",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 7,
+                title: "Outer Wilds",
+                description: "Jogo de exploração espacial onde você investiga um sistema solar em loop temporal de 22 minutos, desvendando mistérios antigos.",
+                review: "A sensação de descoberta genuína é rara em jogos, mas Outer Wilds a captura perfeitamente. Cada planeta é único e os mistérios se desdobram de maneira orgânica.",
+                likes: [
+                    "Exploração genuinamente recompensadora",
+                    "Sistema de loop temporal bem implementado",
+                    "Mistério envolvente",
+                    "Física espacial realista",
+                    "Narrativa ambiental excelente"
+                ],
+                recommendation: "Perfeito para jogadores curiosos. Evite guias - a magia está em descobrir por conta própria.",
+                genre: "Exploração/Aventura",
+                platform: "PC/PS4/Xbox One/Switch",
+                year: "2019",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 8,
+                title: "Return of the Obra Dinn",
+                description: "Jogo de investigação onde você usa uma bússola mágica para descobrir o destino de cada tripulante de um navio fantasma.",
+                review: "A estética monocromática e o design de som criam uma atmosfera inigualável. Resolver os destinos dos tripulantes através de pistas contextuais é extremamente satisfatório.",
+                likes: [
+                    "Estética visual única",
+                    "Mecânica de investigação inovadora",
+                    "Narrativa não-linear",
+                    "Atmosfera imersiva",
+                    "Satisfação ao resolver mistérios"
+                ],
+                recommendation: "Ideal para fãs de mistérios e narrativas não-lineares. A dificuldade de investigação pode desafiar, mas a recompensa vale a pena.",
+                genre: "Puzzle/Investigação",
+                platform: "PC/Switch/PS4/Xbox One",
+                year: "2018",
+                rating: 4,
+                image: "https://images.unsplash.com/photo-1573303784624-2d5d0f6d3c4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        // Função para criar estrelas
+        function createStars(rating) {
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    starsHtml += '<i class="fas fa-star filled"></i>';
+                } else {
+                    starsHtml += '<i class="far fa-star"></i>';
+                }
+            }
+            return starsHtml;
+        }
+
+        // Carregar games
+        function loadGames() {
+            const container = $('#games-container');
+            container.empty();
+
+            games.forEach(game => {
+                const gameHtml = `
+                    <div class="game-card bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden" data-id="${game.id}">
+                        <div class="h-48 overflow-hidden">
+                            <img src="${game.image}" alt="${game.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-gray-900 mb-2 text-sm truncate">${game.title}</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">${game.platform}</span>
+                                <div class="star-rating text-yellow-500">
+                                    ${createStars(game.rating)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.append(gameHtml);
+            });
+
+            // Configurar eventos de clique
+            $('.game-card').on('click', function () {
+                const gameId = $(this).data('id');
+                const game = games.find(g => g.id === gameId);
+
+                if (game) {
+                    // Preencher modal
+                    $('#modal-title').text(game.title);
+                    $('#modal-description').text(game.description);
+                    $('#modal-review').text(game.review);
+                    $('#modal-recommendation').text(game.recommendation);
+                    $('#modal-genre').text(game.genre);
+                    $('#modal-platform').text(game.platform);
+                    $('#modal-year').text(game.year);
+                    $('#modal-rating').html(createStars(game.rating));
+                    $('#modal-image').attr('src', game.image);
+
+                    // Preencher likes
+                    const likesContainer = $('#modal-likes');
+                    likesContainer.empty();
+                    game.likes.forEach(like => {
+                        likesContainer.append(`
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>${like}</span>
+                            </li>
+                        `);
+                    });
+
+                    // Mostrar modal
+                    $('#game-modal').addClass('active');
+                }
+            });
+
+            // Fechar modal
+            $('#close-modal').on('click', function () {
+                $('#game-modal').removeClass('active');
+            });
+
+            // Fechar modal ao clicar fora
+            $('#game-modal').on('click', function (e) {
+                if (e.target === this) {
+                    $(this).removeClass('active');
+                }
+            });
+        }
+
+        // Inicializar quando carregar
+        $(document).ready(function () {
+            loadGames();
+        });
+    </script>
+</body>
+
+</html>

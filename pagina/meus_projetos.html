@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Projetos - Portfólio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Devicon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .project-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            animation: slideUp 0.4s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Botão Voltar -->
+    <div class="fixed top-4 left-4 z-20">
+        <a href="../index.html"
+            class="flex items-center px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            <i class="fas fa-arrow-left mr-3"></i>
+            <span class="font-medium">Voltar ao Menu</span>
+        </a>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mx-auto px-4 py-12 max-w-6xl">
+        <!-- Cabeçalho -->
+        <header class="mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Meus Projetos</h1>
+            <div class="h-1.5 w-32 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full mb-6"></div>
+            <p class="text-lg text-gray-700">Clique em qualquer projeto para ver mais detalhes</p>
+        </header>
+
+        <!-- Grid de Projetos -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-container">
+            <!-- Projetos serão carregados via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-auto">
+            <div class="p-8">
+                <!-- Cabeçalho do Modal -->
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-2xl font-bold text-gray-900">Detalhes do Projeto</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl transition">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Conteúdo do Modal -->
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Imagem e Tecnologias -->
+                    <div class="lg:w-2/5">
+                        <img id="modal-image" src="" alt="Projeto"
+                            class="w-full h-64 object-cover rounded-xl shadow-lg mb-6">
+
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Tecnologias Utilizadas</h4>
+                            <div id="modal-tech" class="flex flex-wrap gap-3"></div>
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <a id="modal-live" href="#" target="_blank"
+                                class="flex-1 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg text-center hover:shadow-lg transition">
+                                <i class="fas fa-external-link-alt mr-2"></i>Ver Projeto
+                            </a>
+                            <a id="modal-code" href="#" target="_blank"
+                                class="flex-1 py-3 bg-gray-200 text-gray-900 rounded-lg text-center hover:bg-gray-300 transition">
+                                <i class="fab fa-github mr-2"></i>Código
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Descrição e Detalhes -->
+                    <div class="lg:w-3/5">
+                        <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-4"></h3>
+                        <p id="modal-description" class="text-gray-700 mb-8"></p>
+
+                        <div class="mb-8">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Funcionalidades</h4>
+                            <ul id="modal-features" class="text-gray-700 space-y-3"></ul>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-200">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Desafios e Soluções</h4>
+                            <p id="modal-challenges" class="text-gray-700"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        // Dados dos projetos
+        const projects = [
+            {
+                id: 1,
+                title: "E-commerce WordPress Premium",
+                description: "Loja virtual completa desenvolvida com WordPress e WooCommerce, otimizada para alta conversão e performance. Design responsivo com foco em experiência do usuário.",
+                features: [
+                    "Design responsivo com Elementor Pro",
+                    "Integração completa com WooCommerce",
+                    "Sistema de avaliações e reviews",
+                    "Checkout otimizado em 3 etapas",
+                    "Gateway de pagamento múltiplo",
+                    "Painel administrativo completo"
+                ],
+                challenges: "Otimizar o desempenho de um site WordPress com múltiplos plugins sem comprometer funcionalidades. Implementei cache avançado, otimização de imagens e carregamento seletivo de scripts.",
+                tech: ["WordPress", "Elementor", "WooCommerce", "PHP", "JavaScript", "CSS3"],
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                live: "#",
+                code: "#"
+            },
+            {
+                id: 2,
+                title: "Dashboard Vue.js Empresarial",
+                description: "Dashboard administrativo desenvolvido com Vue.js e Vuetify para visualização de dados em tempo real. Interface moderna com gráficos interativos e relatórios.",
+                features: [
+                    "Componentes Vue.js reutilizáveis",
+                    "Design system com Vuetify",
+                    "Gráficos interativos em tempo real",
+                    "Filtros e buscas avançadas",
+                    "Exportação de relatórios (PDF/Excel)",
+                    "Responsivo para mobile"
+                ],
+                challenges: "Gerenciar estado de componentes complexos e performance com grandes datasets. Implementei Vuex para gerenciamento de estado e virtual scrolling.",
+                tech: ["Vue.js", "Vuetify", "JavaScript", "Chart.js", "API REST", "Vuex"],
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                live: "#",
+                code: "#"
+            },
+            {
+                id: 3,
+                title: "Site Corporativo Moderno",
+                description: "Site institucional desenvolvido com Tailwind CSS, focado em performance e SEO. Design minimalista com navegação intuitiva e conteúdo otimizado.",
+                features: [
+                    "Design responsivo com Tailwind CSS",
+                    "Otimizado para Core Web Vitals",
+                    "Formulários com validação em tempo real",
+                    "Blog integrado com sistema de tags",
+                    "SEO técnico implementado",
+                    "Analytics e tracking completo"
+                ],
+                challenges: "Manter consistência visual em um projeto grande. Utilizei componentes reutilizáveis e sistema de design com Tailwind CSS.",
+                tech: ["HTML5", "Tailwind CSS", "JavaScript", "PHP", "SEO", "Figma"],
+                image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                live: "#",
+                code: "#"
+            },
+            {
+                id: 4,
+                title: "Sistema de Agendamento Online",
+                description: "Sistema completo para agendamento de serviços com calendário interativo, confirmação automática e gestão de clientes.",
+                features: [
+                    "Calendário interativo com FullCalendar",
+                    "Confirmação automática por email/SMS",
+                    "Painel administrativo em tempo real",
+                    "Integração com Google Calendar",
+                    "Sistema de notificações push",
+                    "Relatórios e analytics"
+                ],
+                challenges: "Sincronizar eventos entre múltiplos calendários. Implementei validações em tempo real e sistema de filas.",
+                tech: ["JavaScript", "jQuery", "PHP", "MySQL", "FullCalendar", "API REST"],
+                image: "https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                live: "#",
+                code: "#"
+            },
+            {
+                id: 5,
+                title: "Aplicação Vue.js SPA",
+                description: "Aplicação Single Page Application desenvolvida com Vue.js para gerenciamento de conteúdo. Interface fluida com navegação sem refresh.",
+                features: [
+                    "Arquitetura SPA com Vue Router",
+                    "Gestão de estado com Vuex",
+                    "Autenticação JWT segura",
+                    "Upload de arquivos com preview",
+                    "Busca em tempo real",
+                    "Interface acessível WCAG 2.1"
+                ],
+                challenges: "Implementar navegação fluida mantendo SEO. Usei Vue Router com history mode e pré-renderização.",
+                tech: ["Vue.js", "Vue Router", "Vuex", "JavaScript", "API REST", "Axios"],
+                image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                live: "#",
+                code: "#"
+            },
+            {
+                id: 6,
+                title: "Tema WordPress Personalizado",
+                description: "Tema WordPress desenvolvido do zero com foco em performance, acessibilidade e SEO. Totalmente compatível com Gutenberg.",
+                features: [
+                    "Tema WordPress otimizado para performance",
+                    "Compatível com Gutenberg e Elementor",
+                    "Schema markup para SEO avançado",
+                    "Totalmente acessível (WCAG 2.1)",
+                    "Sistema de customizer",
+                    "Otimizado para Core Web Vitals"
+                ],
+                challenges: "Criar tema WordPress com alta performance e flexibilidade. Otimizei consultas e implementei lazy loading.",
+                tech: ["WordPress", "PHP", "JavaScript", "Sass", "Gutenberg", "ACF"],
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                live: "#",
+                code: "#"
+            }
+        ];
+
+        // Função para obter ícone da tecnologia
+        function getTechIcon(techName) {
+            const icons = {
+                "WordPress": "devicon-wordpress-plain text-blue-500",
+                "Elementor": "fas fa-th text-orange-500",
+                "WooCommerce": "fas fa-shopping-cart text-purple-500",
+                "PHP": "devicon-php-plain text-purple-500",
+                "JavaScript": "devicon-javascript-plain text-yellow-500",
+                "CSS3": "devicon-css3-plain text-blue-500",
+                "Vue.js": "devicon-vuejs-plain text-green-500",
+                "Vuetify": "devicon-vuetify-line text-blue-400",
+                "Chart.js": "fas fa-chart-bar text-pink-500",
+                "API REST": "fas fa-server text-gray-600",
+                "Vuex": "fab fa-vuejs text-green-400",
+                "HTML5": "devicon-html5-plain text-orange-500",
+                "Tailwind CSS": "devicon-tailwindcss-plain text-teal-500",
+                "SEO": "fas fa-search text-blue-600",
+                "Figma": "devicon-figma-plain text-pink-500",
+                "jQuery": "devicon-jquery-plain text-blue-500",
+                "MySQL": "devicon-mysql-plain text-blue-600",
+                "FullCalendar": "fas fa-calendar-alt text-red-500",
+                "Vue Router": "fab fa-vuejs text-green-300",
+                "Axios": "fas fa-exchange-alt text-purple-500",
+                "Sass": "devicon-sass-plain text-pink-500",
+                "Gutenberg": "fas fa-cubes text-blue-500",
+                "ACF": "fas fa-wrench text-gray-600"
+            };
+
+            return icons[techName] || "fas fa-code text-gray-600";
+        }
+
+        // Carregar projetos
+        function loadProjects() {
+            const container = $('#projects-container');
+            container.empty();
+
+            projects.forEach(project => {
+                const projectHtml = `
+                    <div class="project-card bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden" data-id="${project.id}">
+                        <div class="h-56 overflow-hidden">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-bold text-gray-900 text-xl mb-3">${project.title}</h3>
+                            <p class="text-gray-700 text-sm mb-4 line-clamp-2">${project.description}</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${project.tech.slice(0, 3).map(tech => `
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">${tech}</span>
+                                `).join('')}
+                                ${project.tech.length > 3 ? '<span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">+ mais</span>' : ''}
+                            </div>
+                            <div class="text-right">
+                                <button class="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                    Ver detalhes <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.append(projectHtml);
+            });
+
+            // Configurar eventos de clique
+            $('.project-card').on('click', function () {
+                const projectId = $(this).data('id');
+                const project = projects.find(p => p.id === projectId);
+
+                if (project) {
+                    // Preencher modal
+                    $('#modal-title').text(project.title);
+                    $('#modal-description').text(project.description);
+                    $('#modal-challenges').text(project.challenges);
+                    $('#modal-image').attr('src', project.image);
+                    $('#modal-live').attr('href', project.live);
+                    $('#modal-code').attr('href', project.code);
+
+                    // Preencher tecnologias
+                    const techContainer = $('#modal-tech');
+                    techContainer.empty();
+                    project.tech.forEach(tech => {
+                        techContainer.append(`
+                            <div class="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                                <i class="${getTechIcon(tech)} text-2xl mb-2"></i>
+                                <span class="text-sm text-gray-800">${tech}</span>
+                            </div>
+                        `);
+                    });
+
+                    // Preencher features
+                    const featuresContainer = $('#modal-features');
+                    featuresContainer.empty();
+                    project.features.forEach(feature => {
+                        featuresContainer.append(`
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>${feature}</span>
+                            </li>
+                        `);
+                    });
+
+                    // Mostrar modal
+                    $('#project-modal').addClass('active');
+                }
+            });
+
+            // Fechar modal
+            $('#close-modal').on('click', function () {
+                $('#project-modal').removeClass('active');
+            });
+
+            // Fechar modal ao clicar fora
+            $('#project-modal').on('click', function (e) {
+                if (e.target === this) {
+                    $(this).removeClass('active');
+                }
+            });
+        }
+
+        // Inicializar quando carregar
+        $(document).ready(function () {
+            loadProjects();
+        });
+    </script>
+</body>
+
+</html>
