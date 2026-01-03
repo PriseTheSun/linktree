@@ -48,6 +48,24 @@
             animation: fadeIn 0.3s;
         }
 
+        .pagination-btn {
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(.disabled) {
+            transform: translateY(-2px);
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(to right, #4b5563, #1f2937);
+            color: white;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -76,11 +94,58 @@
             <h1 class="text-4xl font-bold text-gray-900 mb-4">Games</h1>
             <div class="h-1.5 w-32 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full mb-6"></div>
             <p class="text-lg text-gray-700">Clique em qualquer jogo para ver detalhes e minha avaliação</p>
+            <div class="mt-4 flex items-center text-gray-600">
+                <i class="fas fa-gamepad mr-2"></i>
+                <span id="game-count" class="font-medium">Total de 0 games</span>
+            </div>
         </header>
 
         <!-- Grid de Games -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="games-container">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12" id="games-container">
             <!-- Games serão carregados via JavaScript -->
+        </div>
+
+        <!-- Controles de Paginação -->
+        <div class="flex flex-col sm:flex-row items-center justify-between py-6 border-t border-gray-200">
+            <!-- Informação da página -->
+            <div class="mb-4 sm:mb-0 text-gray-700">
+                Mostrando <span id="page-info" class="font-bold">1-8</span> de <span id="total-games"
+                    class="font-bold">0</span> games
+            </div>
+
+            <!-- Navegação de Páginas -->
+            <div class="flex items-center space-x-2">
+                <!-- Botão Anterior -->
+                <button id="prev-page"
+                    class="pagination-btn flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    <span>Anterior</span>
+                </button>
+
+                <!-- Números de Página -->
+                <div id="page-numbers" class="flex space-x-1">
+                    <!-- Páginas serão geradas dinamicamente -->
+                </div>
+
+                <!-- Botão Próximo -->
+                <button id="next-page"
+                    class="pagination-btn flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled">
+                    <span>Próximo</span>
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Seletor de Games por Página -->
+            <div class="mt-4 sm:mt-0 flex items-center">
+                <label for="games-per-page" class="mr-3 text-gray-700">Games por página:</label>
+                <select id="games-per-page"
+                    class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent">
+                    <option value="4">4</option>
+                    <option value="8" selected>8</option>
+                    <option value="12">12</option>
+                    <option value="16">16</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -176,25 +241,24 @@
                 rating: 5,
                 image: "../images/cover_zelda_bow.avif"
             },
-
             {
                 id: 2,
-                title: "Divinity: Original Sin 2",
-                description: "RPG tático e profundo com um sistema de combate baseado em turnos, mundo aberto repleto de escolhas significativas e uma narrativa imersiva que reage às decisões do jogador.",
-                review: "A liberdade de abordagem é inigualável, permitindo resolver situações de inúmeras formas criativas. A escrita é excepcional, os personagens são complexos e o combate tático é desafiador e gratificante.",
+                title: "The Legend of Zelda: Tears of the Kingdom",
+                description: "Sequência direta de Breath of the Wild, expandindo radicalmente o mundo de Hyrule com as novas mecânicas de Ultracria e Fusão, que permitem criar veículos, armas e soluções de forma livre.",
+                review: "A liberdade criativa é absoluta e redefine o que é possível em um mundo aberto. A exploração vertical nas ilhas flutuantes e nas profundezas sombrias adiciona camadas surpreendentes a um mapa já vasto. A narrativa é épica e emocionante.",
                 likes: [
-                    "Liberdade e consequência reais nas escolhas",
-                    "Sistema de combate tático profundo",
-                    "Escrita e desenvolvimento de personagens excepcionais",
-                    "Mundo aberto rico e detalhado",
-                    "Excelente modo cooperativo para até 4 jogadores"
+                    "Liberdade criativa quase ilimitada com Ultracriação/Fusão",
+                    "Expansão vertical massiva do mundo (céu, superfície, profundezas)",
+                    "Sensação constante de descoberta e aventura",
+                    "Quebra-cabeças físicos engenhosos e abertos",
+                    "História cativante que aprofunda o lore de Hyrule"
                 ],
-                recommendation: "Um marco obrigatório para fãs de RPGs clássicos e táticos. Oferece uma das experiências mais imersivas e recompensadoras do gênero, especialmente em cooperação.",
-                genre: "RPG Tático",
-                platform: "PC/PS4/Xbox One/Nintendo Switch",
-                year: "2017",
+                recommendation: "Uma obra-prima essencial que supera o já revolucionário predecessor. Perfeito para quem valoriza exploração pura, criatividade e a emoção de descobrir o desconhecido em um mundo vasto e detalhado.",
+                genre: "Aventura/Ação",
+                platform: "Nintendo Switch",
+                year: "2023",
                 rating: 5,
-                image: "../images/cover_divinity_original_sin_II.avif"
+                image: "../images/cover_zelda_tok.avif"
             },
             {
                 id: 3,
@@ -232,7 +296,7 @@
                 platform: "PC/Switch/PS4/Xbox One",
                 year: "2017",
                 rating: 5,
-                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                image: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
                 id: 5,
@@ -328,8 +392,70 @@
                 year: "2018",
                 rating: 4,
                 image: "https://images.unsplash.com/photo-1573303784624-2d5d0f6d3c4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 10,
+                title: "Hades",
+                description: "Roguelike de ação onde você controla Zagreus, filho de Hades, tentando escapar do Submundo grego.",
+                review: "A combinação perfeita de gameplay viciante e narrativa profunda. Cada corrida revela mais sobre os personagens e o mundo, mantendo o jogador engajado.",
+                likes: [
+                    "Combate fluido e responsivo",
+                    "Sistema de evolução de personagem",
+                    "Escrita excelente e personagens carismáticos",
+                    "Arte visual deslumbrante",
+                    "Trilha sonora eletrizante"
+                ],
+                recommendation: "Excelente para quem gosta de ação rápida e progressão constante. Atrai tanto fãs de roguelikes quanto jogadores casuais.",
+                genre: "Roguelike/Ação",
+                platform: "PC/Switch/PS4/PS5/Xbox One/Xbox Series",
+                year: "2020",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 11,
+                title: "Portal 2",
+                description: "Jogo de quebra-cabeças em primeira pessoa onde você usa uma arma de portais para resolver puzzles físicos complexos.",
+                review: "A mecânica de portais é engenhosa e constantemente reinventada. O humor afiado e a história surpreendentemente emocionante elevam este jogo a um clássico.",
+                likes: [
+                    "Mecânica de portais inovadora",
+                    "Humor inteligente e personagens memoráveis",
+                    "Quebra-cabeças criativos",
+                    "Modo cooperativo excelente",
+                    "Narrativa envolvente"
+                ],
+                recommendation: "Obrigatório para qualquer fã de puzzles. A curva de aprendizado é perfeita e a experiência é inesquecível.",
+                genre: "Puzzle/Plataforma",
+                platform: "PC/PS3/Xbox 360",
+                year: "2011",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 12,
+                title: "The Witcher 3: Wild Hunt",
+                description: "RPG de mundo aberto onde você controla Geralt de Rivia, um caçador de monstros, em sua busca por sua filha adotiva.",
+                review: "O mundo é rico e vivo, com histórias secundárias que rivalizam com a trama principal. As escolhas têm consequências reais e a imersão é total.",
+                likes: [
+                    "Mundo aberto detalhado e vivo",
+                    "Histórias secundárias de alta qualidade",
+                    "Sistema de combate tático",
+                    "Personagens complexos e bem desenvolvidos",
+                    "Expansões excepcionais"
+                ],
+                recommendation: "Para quem busca uma narrativa profunda em um mundo rico. A quantidade de conteúdo pode ser intimidante, mas a qualidade é consistente.",
+                genre: "RPG/Ação",
+                platform: "PC/PS4/PS5/Xbox One/Xbox Series/Switch",
+                year: "2015",
+                rating: 5,
+                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             }
         ];
+
+        // Variáveis de estado da paginação
+        let currentPage = 1;
+        let gamesPerPage = 8;
+        let totalPages = Math.ceil(games.length / gamesPerPage);
 
         // Função para criar estrelas
         function createStars(rating) {
@@ -344,12 +470,77 @@
             return starsHtml;
         }
 
-        // Carregar games
-        function loadGames() {
+        // Função para atualizar as informações da página
+        function updatePageInfo() {
+            const startIndex = (currentPage - 1) * gamesPerPage + 1;
+            const endIndex = Math.min(currentPage * gamesPerPage, games.length);
+
+            $('#page-info').text(`${startIndex}-${endIndex}`);
+            $('#total-games').text(games.length);
+            $('#game-count').text(`Total de ${games.length} games`);
+        }
+
+        // Função para atualizar os controles de paginação
+        function updatePaginationControls() {
+            const pageNumbersContainer = $('#page-numbers');
+            pageNumbersContainer.empty();
+
+            // Calcular quais números de página mostrar
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            // Ajustar para mostrar sempre 5 páginas quando possível
+            if (endPage - startPage < 4) {
+                if (startPage === 1) {
+                    endPage = Math.min(totalPages, startPage + 4);
+                } else if (endPage === totalPages) {
+                    startPage = Math.max(1, endPage - 4);
+                }
+            }
+
+            // Adicionar botão para primeira página se necessário
+            if (startPage > 1) {
+                pageNumbersContainer.append(`
+                    <button class="pagination-btn px-3 py-2 rounded-lg hover:bg-gray-200" data-page="1">1</button>
+                    ${startPage > 2 ? '<span class="px-2">...</span>' : ''}
+                `);
+            }
+
+            // Adicionar números das páginas
+            for (let i = startPage; i <= endPage; i++) {
+                pageNumbersContainer.append(`
+                    <button class="pagination-btn px-3 py-2 rounded-lg ${i === currentPage ? 'active' : 'hover:bg-gray-200'}" data-page="${i}">${i}</button>
+                `);
+            }
+
+            // Adicionar botão para última página se necessário
+            if (endPage < totalPages) {
+                pageNumbersContainer.append(`
+                    ${endPage < totalPages - 1 ? '<span class="px-2">...</span>' : ''}
+                    <button class="pagination-btn px-3 py-2 rounded-lg hover:bg-gray-200" data-page="${totalPages}">${totalPages}</button>
+                `);
+            }
+
+            // Atualizar estado dos botões de navegação
+            $('#prev-page').toggleClass('disabled', currentPage === 1);
+            $('#next-page').toggleClass('disabled', currentPage === totalPages);
+
+            // Atualizar o seletor de games por página
+            $('#games-per-page').val(gamesPerPage);
+        }
+
+        // Função para carregar os games da página atual
+        function loadCurrentPageGames() {
             const container = $('#games-container');
             container.empty();
 
-            games.forEach(game => {
+            // Calcular índices dos games a mostrar
+            const startIndex = (currentPage - 1) * gamesPerPage;
+            const endIndex = Math.min(startIndex + gamesPerPage, games.length);
+            const gamesToShow = games.slice(startIndex, endIndex);
+
+            // Adicionar cards dos games
+            gamesToShow.forEach(game => {
                 const gameHtml = `
                     <div class="game-card bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden" data-id="${game.id}">
                         <div class="h-48 overflow-hidden">
@@ -357,11 +548,15 @@
                         </div>
                         <div class="p-5">
                             <h3 class="font-bold text-gray-900 mb-2 text-sm truncate">${game.title}</h3>
-                            <div class="mb-3">
+                            <div class="mb-3 flex flex-wrap gap-1">
                                 <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">${game.platform}</span>
+                                <span class="text-xs text-gray-600 bg-blue-100 px-2 py-1 rounded">${game.genre}</span>
                             </div>
                             <div class="star-rating text-yellow-500">
                                 ${createStars(game.rating)}
+                            </div>
+                            <div class="mt-3 text-xs text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> ${game.year}
                             </div>
                         </div>
                     </div>
@@ -369,7 +564,16 @@
                 container.append(gameHtml);
             });
 
-            // Configurar eventos de clique
+            // Atualizar informações da página
+            updatePageInfo();
+            updatePaginationControls();
+
+            // Configurar eventos de clique nos cards
+            setupGameCardEvents();
+        }
+
+        // Função para configurar eventos nos cards dos games
+        function setupGameCardEvents() {
             $('.game-card').on('click', function () {
                 const gameId = $(this).data('id');
                 const game = games.find(g => g.id === gameId);
@@ -402,6 +606,55 @@
                     $('#game-modal').addClass('active');
                 }
             });
+        }
+
+        // Função para mudar de página
+        function goToPage(page) {
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            loadCurrentPageGames();
+
+            // Rolar para o topo da seção de games
+            $('html, body').animate({
+                scrollTop: $('.container').offset().top - 100
+            }, 300);
+        }
+
+        // Inicializar quando carregar
+        $(document).ready(function () {
+            // Calcular total de páginas
+            totalPages = Math.ceil(games.length / gamesPerPage);
+
+            // Carregar primeira página
+            loadCurrentPageGames();
+
+            // Configurar eventos de paginação
+            $('#prev-page').on('click', function () {
+                if (!$(this).hasClass('disabled')) {
+                    goToPage(currentPage - 1);
+                }
+            });
+
+            $('#next-page').on('click', function () {
+                if (!$(this).hasClass('disabled')) {
+                    goToPage(currentPage + 1);
+                }
+            });
+
+            // Configurar evento para clicar nos números de página
+            $(document).on('click', '.pagination-btn[data-page]', function () {
+                const page = parseInt($(this).data('page'));
+                goToPage(page);
+            });
+
+            // Configurar evento para mudar quantidade de games por página
+            $('#games-per-page').on('change', function () {
+                gamesPerPage = parseInt($(this).val());
+                currentPage = 1;
+                totalPages = Math.ceil(games.length / gamesPerPage);
+                loadCurrentPageGames();
+            });
 
             // Fechar modal
             $('#close-modal').on('click', function () {
@@ -414,11 +667,13 @@
                     $(this).removeClass('active');
                 }
             });
-        }
 
-        // Inicializar quando carregar
-        $(document).ready(function () {
-            loadGames();
+            // Fechar modal com tecla ESC
+            $(document).on('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    $('#game-modal').removeClass('active');
+                }
+            });
         });
     </script>
 </body>
