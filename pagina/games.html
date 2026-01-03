@@ -66,6 +66,38 @@
             cursor: not-allowed;
         }
 
+        .masterpiece-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .masterpiece-badge::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -74,6 +106,16 @@
             to {
                 opacity: 1;
             }
+        }
+
+        .masterpiece-card {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #f59e0b, #d97706) border-box;
+        }
+
+        .masterpiece-glow {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
         }
     </style>
 </head>
@@ -97,6 +139,9 @@
             <div class="mt-4 flex items-center text-gray-600">
                 <i class="fas fa-gamepad mr-2"></i>
                 <span id="game-count" class="font-medium">Total de 0 games</span>
+                <span class="mx-2">•</span>
+                <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                <span id="masterpiece-count" class="font-medium text-yellow-600">0 obras primas</span>
             </div>
         </header>
 
@@ -155,7 +200,13 @@
             <div class="p-8">
                 <!-- Cabeçalho do Modal -->
                 <div class="flex justify-between items-center mb-8">
-                    <h3 class="text-2xl font-bold text-gray-900">Detalhes do Jogo</h3>
+                    <div class="flex items-center">
+                        <h3 class="text-2xl font-bold text-gray-900">Detalhes do Jogo</h3>
+                        <div id="modal-masterpiece-badge"
+                            class="ml-4 masterpiece-badge px-3 py-1 rounded-full text-xs hidden">
+                            <i class="fas fa-crown mr-1"></i> OBRA PRIMA
+                        </div>
+                    </div>
                     <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
                         <i class="fas fa-times"></i>
                     </button>
@@ -188,6 +239,13 @@
                                 <p class="text-sm text-gray-600 mb-1">Ano de Lançamento</p>
                                 <span id="modal-year"
                                     class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div id="modal-status-container" class="hidden">
+                                <p class="text-sm text-gray-600 mb-1">Status</p>
+                                <span id="modal-status"
+                                    class="px-4 py-2 bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 rounded-lg text-sm font-medium block border border-yellow-200">
+                                    <i class="fas fa-crown mr-2"></i>Obra Prima
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -239,6 +297,7 @@
                 platform: "Nintendo Switch",
                 year: "2017",
                 rating: 5,
+                masterpiece: true,
                 image: "../images/cover_zelda_bow.avif"
             },
             {
@@ -258,6 +317,7 @@
                 platform: "Nintendo Switch",
                 year: "2023",
                 rating: 5,
+                masterpiece: true,
                 image: "../images/cover_zelda_tok.avif"
             },
             {
@@ -277,6 +337,7 @@
                 platform: "PC/PS4/Xbox One/Nintendo Switch",
                 year: "2017",
                 rating: 5,
+                masterpiece: true,
                 image: "../images/cover_divinity_original_sin_II.avif"
             },
             {
@@ -296,6 +357,7 @@
                 platform: "PC/Switch/PS4/Xbox One",
                 year: "2017",
                 rating: 5,
+                masterpiece: false,
                 image: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -315,6 +377,7 @@
                 platform: "PC/Mobile/Consoles",
                 year: "2016",
                 rating: 4,
+                masterpiece: false,
                 image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -334,6 +397,7 @@
                 platform: "PC/Switch/PS4/Xbox One",
                 year: "2018",
                 rating: 4,
+                masterpiece: false,
                 image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -353,6 +417,7 @@
                 platform: "PC/PS4/Xbox One/Switch",
                 year: "2019",
                 rating: 5,
+                masterpiece: true,
                 image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -372,6 +437,7 @@
                 platform: "PC/PS4/Xbox One/Switch",
                 year: "2019",
                 rating: 5,
+                masterpiece: true,
                 image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -391,6 +457,7 @@
                 platform: "PC/Switch/PS4/Xbox One",
                 year: "2018",
                 rating: 4,
+                masterpiece: false,
                 image: "https://images.unsplash.com/photo-1573303784624-2d5d0f6d3c4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -410,6 +477,7 @@
                 platform: "PC/Switch/PS4/PS5/Xbox One/Xbox Series",
                 year: "2020",
                 rating: 5,
+                masterpiece: true,
                 image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -429,6 +497,7 @@
                 platform: "PC/PS3/Xbox 360",
                 year: "2011",
                 rating: 5,
+                masterpiece: true,
                 image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             },
             {
@@ -448,6 +517,7 @@
                 platform: "PC/PS4/PS5/Xbox One/Xbox Series/Switch",
                 year: "2015",
                 rating: 5,
+                masterpiece: true,
                 image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
             }
         ];
@@ -456,6 +526,11 @@
         let currentPage = 1;
         let gamesPerPage = 8;
         let totalPages = Math.ceil(games.length / gamesPerPage);
+
+        // Função para contar obras primas
+        function countMasterpieces() {
+            return games.filter(game => game.masterpiece).length;
+        }
 
         // Função para criar estrelas
         function createStars(rating) {
@@ -478,6 +553,7 @@
             $('#page-info').text(`${startIndex}-${endIndex}`);
             $('#total-games').text(games.length);
             $('#game-count').text(`Total de ${games.length} games`);
+            $('#masterpiece-count').text(`${countMasterpieces()} obras primas`);
         }
 
         // Função para atualizar os controles de paginação
@@ -541,8 +617,17 @@
 
             // Adicionar cards dos games
             gamesToShow.forEach(game => {
+                const isMasterpiece = game.masterpiece || false;
+                const masterpieceClass = isMasterpiece ? 'masterpiece-card masterpiece-glow' : '';
+                const masterpieceBadge = isMasterpiece ? `
+                    <div class="absolute top-3 left-3 masterpiece-badge px-2 py-1 rounded-md text-xs z-10">
+                        <i class="fas fa-crown mr-1"></i>OBRA PRIMA
+                    </div>
+                ` : '';
+
                 const gameHtml = `
-                    <div class="game-card bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden" data-id="${game.id}">
+                    <div class="game-card bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden relative ${masterpieceClass}" data-id="${game.id}">
+                        ${masterpieceBadge}
                         <div class="h-48 overflow-hidden">
                             <img src="${game.image}" alt="${game.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                         </div>
@@ -551,6 +636,7 @@
                             <div class="mb-3 flex flex-wrap gap-1">
                                 <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">${game.platform}</span>
                                 <span class="text-xs text-gray-600 bg-blue-100 px-2 py-1 rounded">${game.genre}</span>
+                                ${isMasterpiece ? '<span class="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded"><i class="fas fa-crown mr-1"></i>Obra Prima</span>' : ''}
                             </div>
                             <div class="star-rating text-yellow-500">
                                 ${createStars(game.rating)}
@@ -589,6 +675,15 @@
                     $('#modal-year').text(game.year);
                     $('#modal-rating').html(createStars(game.rating));
                     $('#modal-image').attr('src', game.image);
+
+                    // Mostrar ou esconder badge de obra prima
+                    if (game.masterpiece) {
+                        $('#modal-masterpiece-badge').removeClass('hidden');
+                        $('#modal-status-container').removeClass('hidden');
+                    } else {
+                        $('#modal-masterpiece-badge').addClass('hidden');
+                        $('#modal-status-container').addClass('hidden');
+                    }
 
                     // Preencher likes
                     const likesContainer = $('#modal-likes');
