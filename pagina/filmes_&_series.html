@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmes & Séries - Meu Portfólio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+    <style>
+        .media-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .media-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .star-rating i {
+            color: #d1d5db;
+        }
+
+        .star-rating i.filled {
+            color: #f59e0b;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        .pagination-btn {
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(.disabled) {
+            transform: translateY(-2px);
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(to right, #4b5563, #1f2937);
+            color: white;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .masterpiece-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .masterpiece-badge::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .masterpiece-card {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #f59e0b, #d97706) border-box;
+        }
+
+        .masterpiece-glow {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .film-badge {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .series-badge {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+
+        .type-badge {
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .director-icon {
+            color: #6b7280;
+        }
+
+        .duration-icon {
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Botão Voltar -->
+    <div class="fixed top-4 right-4 z-20">
+        <a href="../index.html"
+            class="flex items-center px-4 py-4 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-[3em] shadow-lg hover:shadow-xl transition-all duration-300">
+            <i class="fa-solid fa-house"></i>
+        </a>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mx-auto px-4 py-12 max-w-6xl">
+        <!-- Cabeçalho -->
+        <header class="mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Filmes & Séries</h1>
+            <div class="h-1.5 w-32 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full mb-6"></div>
+            <p class="text-lg text-gray-700">Clique em qualquer filme ou série para ver detalhes e minha avaliação</p>
+            <div class="mt-4 flex items-center text-gray-600">
+                <i class="fas fa-film mr-2"></i>
+                <span id="media-count" class="font-medium">Total de 0 títulos</span>
+                <span class="mx-2">•</span>
+                <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                <span id="masterpiece-count" class="font-medium text-yellow-600">0 obras primas</span>
+                <span class="mx-2">•</span>
+                <i class="fas fa-tv text-blue-500 mr-2"></i>
+                <span id="series-count" class="font-medium text-blue-600">0 séries</span>
+                <span class="mx-2">•</span>
+                <i class="fas fa-clapperboard text-purple-500 mr-2"></i>
+                <span id="films-count" class="font-medium text-purple-600">0 filmes</span>
+            </div>
+        </header>
+
+        <!-- Grid de Filmes & Séries -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12" id="media-container">
+            <!-- Conteúdo será carregado via JavaScript -->
+        </div>
+
+        <!-- Controles de Paginação -->
+        <div class="flex flex-col sm:flex-row items-center justify-between py-6 border-t border-gray-200">
+            <!-- Informação da página -->
+            <div class="mb-4 sm:mb-0 text-gray-700">
+                Mostrando <span id="page-info" class="font-bold">1-8</span> de <span id="total-media"
+                    class="font-bold">0</span> títulos
+            </div>
+
+            <!-- Navegação de Páginas -->
+            <div class="flex items-center space-x-2">
+                <!-- Botão Anterior -->
+                <button id="prev-page"
+                    class="pagination-btn flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    <span>Anterior</span>
+                </button>
+
+                <!-- Números de Página -->
+                <div id="page-numbers" class="flex space-x-1">
+                    <!-- Páginas serão geradas dinamicamente -->
+                </div>
+
+                <!-- Botão Próximo -->
+                <button id="next-page"
+                    class="pagination-btn flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled">
+                    <span>Próximo</span>
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Seletor de Títulos por Página -->
+            <div class="mt-4 sm:mt-0 flex items-center">
+                <label for="media-per-page" class="mr-3 text-gray-700">Títulos por página:</label>
+                <select id="media-per-page"
+                    class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent">
+                    <option value="4">4</option>
+                    <option value="8" selected>8</option>
+                    <option value="12">12</option>
+                    <option value="16">16</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="media-modal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-auto">
+            <div class="p-8">
+                <!-- Cabeçalho do Modal -->
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center">
+                        <h3 class="text-2xl font-bold text-gray-900">Detalhes</h3>
+                        <div id="modal-type-badge" class="ml-4 type-badge px-3 py-1 rounded-full text-xs">
+                            <!-- Tipo (Filme/Série) será inserido aqui -->
+                        </div>
+                        <div id="modal-masterpiece-badge"
+                            class="ml-2 masterpiece-badge px-3 py-1 rounded-full text-xs hidden">
+                            <i class="fas fa-crown mr-1"></i> OBRA PRIMA
+                        </div>
+                    </div>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Conteúdo do Modal -->
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Imagem e Informações Básicas -->
+                    <div class="lg:w-2/5">
+                        <img id="modal-image" src="" alt="Capa"
+                            class="w-full h-64 object-cover rounded-xl shadow-lg mb-6">
+
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">Minha Avaliação</h4>
+                            <div id="modal-rating" class="star-rating text-2xl mb-4"></div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Gênero</p>
+                                <span id="modal-genre"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Ano</p>
+                                <span id="modal-year"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div id="modal-director-container">
+                                <p class="text-sm text-gray-600 mb-1">Diretor/Criador</p>
+                                <span id="modal-director"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div id="modal-duration-container">
+                                <p class="text-sm text-gray-600 mb-1">Duração/Temporadas</p>
+                                <span id="modal-duration"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div id="modal-status-container" class="hidden">
+                                <p class="text-sm text-gray-600 mb-1">Status</p>
+                                <span id="modal-status"
+                                    class="px-4 py-2 bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800 rounded-lg text-sm font-medium block border border-yellow-200">
+                                    <i class="fas fa-crown mr-2"></i>Obra Prima
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descrição e Review -->
+                    <div class="lg:w-3/5">
+                        <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-4"></h3>
+                        <p id="modal-description" class="text-gray-700 mb-8"></p>
+
+                        <div class="mb-8">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Minhas Impressões</h4>
+                            <p id="modal-review" class="text-gray-700 mb-6"></p>
+
+                            <div>
+                                <h5 class="text-lg font-semibold text-gray-900 mb-3">O que mais gostei</h5>
+                                <ul id="modal-likes" class="text-gray-700 space-y-2"></ul>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-200">
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Recomendação</h4>
+                            <p id="modal-recommendation" class="text-gray-700"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Dados dos filmes e séries
+        const media = [
+            {
+                id: 1,
+                title: "Interestelar",
+                description: "Um épico de ficção científica dirigido por Christopher Nolan, onde um grupo de exploradores viaja através de um buraco de minhoca no espaço na tentativa de garantir a sobrevivência da humanidade.",
+                review: "Uma obra-prima científica e emocional. A atenção aos detalhes científicos, combinada com uma narrativa profundamente humana sobre amor e sacrifício, cria uma experiência cinematográfica inesquecível.",
+                likes: [
+                    "Representação científica precisa",
+                    "Trilha sonora épica de Hans Zimmer",
+                    "Fotografia deslumbrante",
+                    "Atuações excepcionais",
+                    "Tema emocional profundo"
+                ],
+                recommendation: "Essencial para fãs de ficção científica e cinema épico. A combinação de ciência real com drama humano é magistral.",
+                genre: "Ficção Científica/Drama",
+                type: "filme",
+                year: "2014",
+                director: "Christopher Nolan",
+                duration: "2h 49min",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                title: "Breaking Bad",
+                description: "Um professor de química do ensino médio diagnosticado com câncer terminal se transforma em um poderoso fabricante de metanfetamina para garantir o futuro financeiro de sua família.",
+                review: "Uma das maiores séries de televisão já feitas. A transformação de Walter White de homem comum a lorde do crime é hipnotizante. A escrita, atuações e direção são impecáveis.",
+                likes: [
+                    "Desenvolvimento de personagens excepcional",
+                    "Arco narrativo coeso e bem planejado",
+                    "Atuações premiadas",
+                    "Suspense constante",
+                    "Finais de temporada impactantes"
+                ],
+                recommendation: "Uma jornada obrigatória sobre moralidade, poder e consequências. Cada temporada supera a anterior.",
+                genre: "Drama/Crime",
+                type: "série",
+                year: "2008-2013",
+                director: "Vince Gilligan",
+                duration: "5 temporadas",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                title: "O Senhor dos Anéis: O Retorno do Rei",
+                description: "A conclusão épica da trilogia onde Gandalf e Aragorn lideram o Mundo dos Homens contra o exército de Sauron enquanto Frodo e Sam se aproximam do Monte da Perdição.",
+                review: "O desfecho perfeito para uma das maiores sagas do cinema. A batalha dos Campos de Pelennor é monumental, e o retorno triunfal de Aragorn é emocionante.",
+                likes: [
+                    "Efeitos visuais revolucionários",
+                    "Cenários e figurinos impressionantes",
+                    "Atuações convincentes",
+                    "Trilha sonora memorável",
+                    "Conclusão satisfatória"
+                ],
+                recommendation: "Um épico obrigatório que define o gênero de fantasia no cinema.",
+                genre: "Fantasia/Aventura",
+                type: "filme",
+                year: "2003",
+                director: "Peter Jackson",
+                duration: "3h 21min",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                title: "Dark",
+                description: "Uma série alemã de ficção científica que segue quatro famílias interconectadas enquanto elas investigam o desaparecimento de duas crianças na cidade de Winden, revelando segredos sombrios que abrangem várias gerações.",
+                review: "A série mais complexa e bem planejada que já vi. A linha do tempo intrincada, as relações familiares e os paradoxos temporais são magistralmente tecidos. A atenção aos detalhes é impressionante.",
+                likes: [
+                    "Roteiro complexo e inteligente",
+                    "Atuações convincentes",
+                    "Fotografia atmosférica",
+                    "Trilha sonora imersiva",
+                    "Conclusão satisfatória e coerente"
+                ],
+                recommendation: "Para quem gosta de quebra-cabeças temporais e narrativas não-lineares. Requer atenção total, mas a recompensa vale cada minuto.",
+                genre: "Ficção Científica/Mistério",
+                type: "série",
+                year: "2017-2020",
+                director: "Baran bo Odar e Jantje Friese",
+                duration: "3 temporadas",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 5,
+                title: "Parasita",
+                description: "Uma sátira social sul-coreana sobre uma família pobre que infiltra-se aos poucos na vida de uma família rica, criando uma situação tensa e inesperada.",
+                review: "Um filme brilhante que mistura comédia, suspense e crítica social de forma magistral. A transição de gênero é suave e impactante, e o final é devastadoramente memorável.",
+                likes: [
+                    "Roteiro inteligente e original",
+                    "Direção impecável",
+                    "Atuações excelentes",
+                    "Crítica social afiada",
+                    "Mistura única de gêneros"
+                ],
+                recommendation: "Um estudo fascinante sobre classes sociais com reviravoltas inesperadas.",
+                genre: "Comédia/Suspense",
+                type: "filme",
+                year: "2019",
+                director: "Bong Joon-ho",
+                duration: "2h 12min",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1489599809516-9827b6d1cf13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 6,
+                title: "Chernobyl",
+                description: "Minissérie que reconta a história do desastre nuclear de Chernobyl em 1986 e os sacrifícios heróicos feitos para salvar a Europa de uma catástrofe inimaginável.",
+                review: "Uma experiência angustiante e educativa. A reconstrução histórica é meticulosa, e a sensação de terror burocrático e heroísmo pessoal é palpável.",
+                likes: [
+                    "Precisão histórica",
+                    "Atuações poderosas",
+                    "Direção atmosférica",
+                    "Tensão constante",
+                    "Importância educativa"
+                ],
+                recommendation: "Uma lição importante sobre os perigos do poder e da negligência, contada de forma magistral.",
+                genre: "Drama/Histórico",
+                type: "série",
+                year: "2019",
+                director: "Johan Renck",
+                duration: "5 episódios",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 7,
+                title: "Blade Runner 2049",
+                description: "Trinta anos após os eventos do primeiro filme, um novo blade runner descobre um segredo há muito enterrado que pode mergulhar o que resta da sociedade no caos.",
+                review: "Uma sequência que honra e expande o original. A fotografia é deslumbrante, a trilha sonora é atmosférica e as questões filosóficas sobre humanidade são profundas.",
+                likes: [
+                    "Fotografia cinematográfica",
+                    "Mundo construído imersivo",
+                    "Trilha sonora atmosférica",
+                    "Ritmo contemplativo",
+                    "Temas filosóficos profundos"
+                ],
+                recommendation: "Para quem aprecia cinema visual e narrativas filosóficas. Requer paciência, mas recompensa com profundidade.",
+                genre: "Ficção Científica/Noir",
+                type: "filme",
+                year: "2017",
+                director: "Denis Villeneuve",
+                duration: "2h 44min",
+                rating: 4,
+                masterpiece: false,
+                image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 8,
+                title: "The Office (US)",
+                description: "Mockumentary sobre o cotidiano dos funcionários do escritório da Dunder Mifflin Paper Company em Scranton, Pensilvânia.",
+                review: "Comédia inteligente com personagens carismáticos. A evolução ao longo das temporadas é natural, e os momentos cômicos são genuínos.",
+                likes: [
+                    "Personagens memoráveis",
+                    "Humor inteligente e repetível",
+                    "Evolução natural da série",
+                    "Momento icônicos",
+                    "Final satisfatório"
+                ],
+                recommendation: "Comédia perfeita para assistir repetidamente. Os personagens crescem em você.",
+                genre: "Comédia/Mockumentary",
+                type: "série",
+                year: "2005-2013",
+                director: "Greg Daniels",
+                duration: "9 temporadas",
+                rating: 4,
+                masterpiece: false,
+                image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 9,
+                title: "O Poderoso Chefão",
+                description: "O patriarca idoso de uma dinastia do crime organizado transfere o controle de seu império clandestino para seu filho relutante.",
+                review: "Obra-prima do cinema que define o gênero de crime. A narrativa sobre família, poder e lealdade é atemporal.",
+                likes: [
+                    "Direção magistral",
+                    "Atuações lendárias",
+                    "Roteiro perfeito",
+                    "Fotografia icônica",
+                    "Trilha sonora memorável"
+                ],
+                recommendation: "Cinema clássico em sua forma mais pura. Uma lição de narrativa e personagens.",
+                genre: "Crime/Drama",
+                type: "filme",
+                year: "1972",
+                director: "Francis Ford Coppola",
+                duration: "2h 55min",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1497124401559-3e75ec2ed794?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 10,
+                title: "Stranger Things",
+                description: "Quando um garoto desaparece, uma pequena cidade descobre um mistério envolvendo experimentos secretos, forças sobrenaturais e uma garota estranha.",
+                review: "Homenagem amorosa aos anos 80 com suspense sobrenatural. A química entre os jovens atores é excelente.",
+                likes: [
+                    "Nostalgia dos anos 80",
+                    "Personagens carismáticos",
+                    "Suspense eficaz",
+                    "Trilha sonora atmosférica",
+                    "Efeitos práticos"
+                ],
+                recommendation: "Diversão pura com coração e suspense. Perfeito para maratonar.",
+                genre: "Ficção Científica/Suspense",
+                type: "série",
+                year: "2016-presente",
+                director: "Irmãos Duffer",
+                duration: "4 temporadas",
+                rating: 4,
+                masterpiece: false,
+                image: "https://images.unsplash.com/photo-1489599809516-9827b6d1cf13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // Variáveis de estado da paginação
+        let currentPage = 1;
+        let mediaPerPage = 8;
+        let totalPages = Math.ceil(media.length / mediaPerPage);
+
+        // Função para contar obras primas, séries e filmes
+        function countStats() {
+            const masterpieces = media.filter(item => item.masterpiece).length;
+            const series = media.filter(item => item.type === 'série').length;
+            const films = media.filter(item => item.type === 'filme').length;
+
+            return { masterpieces, series, films };
+        }
+
+        // Função para criar estrelas
+        function createStars(rating) {
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    starsHtml += '<i class="fas fa-star filled"></i>';
+                } else {
+                    starsHtml += '<i class="far fa-star"></i>';
+                }
+            }
+            return starsHtml;
+        }
+
+        // Função para obter ícone e cor do tipo
+        function getTypeInfo(type) {
+            if (type === 'filme') {
+                return {
+                    icon: 'fa-clapperboard',
+                    color: 'bg-blue-500',
+                    badgeClass: 'film-badge',
+                    text: 'FILME'
+                };
+            } else {
+                return {
+                    icon: 'fa-tv',
+                    color: 'bg-purple-500',
+                    badgeClass: 'series-badge',
+                    text: 'SÉRIE'
+                };
+            }
+        }
+
+        // Função para atualizar as informações da página
+        function updatePageInfo() {
+            const startIndex = (currentPage - 1) * mediaPerPage + 1;
+            const endIndex = Math.min(currentPage * mediaPerPage, media.length);
+
+            $('#page-info').text(`${startIndex}-${endIndex}`);
+            $('#total-media').text(media.length);
+            $('#media-count').text(`Total de ${media.length} títulos`);
+
+            const stats = countStats();
+            $('#masterpiece-count').text(`${stats.masterpieces} obras primas`);
+            $('#series-count').text(`${stats.series} séries`);
+            $('#films-count').text(`${stats.films} filmes`);
+        }
+
+        // Função para atualizar os controles de paginação
+        function updatePaginationControls() {
+            const pageNumbersContainer = $('#page-numbers');
+            pageNumbersContainer.empty();
+
+            // Calcular quais números de página mostrar
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            // Ajustar para mostrar sempre 5 páginas quando possível
+            if (endPage - startPage < 4) {
+                if (startPage === 1) {
+                    endPage = Math.min(totalPages, startPage + 4);
+                } else if (endPage === totalPages) {
+                    startPage = Math.max(1, endPage - 4);
+                }
+            }
+
+            // Adicionar botão para primeira página se necessário
+            if (startPage > 1) {
+                pageNumbersContainer.append(`
+                    <button class="pagination-btn px-3 py-2 rounded-lg hover:bg-gray-200" data-page="1">1</button>
+                    ${startPage > 2 ? '<span class="px-2">...</span>' : ''}
+                `);
+            }
+
+            // Adicionar números das páginas
+            for (let i = startPage; i <= endPage; i++) {
+                pageNumbersContainer.append(`
+                    <button class="pagination-btn px-3 py-2 rounded-lg ${i === currentPage ? 'active' : 'hover:bg-gray-200'}" data-page="${i}">${i}</button>
+                `);
+            }
+
+            // Adicionar botão para última página se necessário
+            if (endPage < totalPages) {
+                pageNumbersContainer.append(`
+                    ${endPage < totalPages - 1 ? '<span class="px-2">...</span>' : ''}
+                    <button class="pagination-btn px-3 py-2 rounded-lg hover:bg-gray-200" data-page="${totalPages}">${totalPages}</button>
+                `);
+            }
+
+            // Atualizar estado dos botões de navegação
+            $('#prev-page').toggleClass('disabled', currentPage === 1);
+            $('#next-page').toggleClass('disabled', currentPage === totalPages);
+
+            // Atualizar o seletor de media por página
+            $('#media-per-page').val(mediaPerPage);
+        }
+
+        // Função para carregar os títulos da página atual
+        function loadCurrentPageMedia() {
+            const container = $('#media-container');
+            container.empty();
+
+            // Calcular índices dos títulos a mostrar
+            const startIndex = (currentPage - 1) * mediaPerPage;
+            const endIndex = Math.min(startIndex + mediaPerPage, media.length);
+            const mediaToShow = media.slice(startIndex, endIndex);
+
+            // Adicionar cards dos títulos
+            mediaToShow.forEach(item => {
+                const isMasterpiece = item.masterpiece || false;
+                const masterpieceClass = isMasterpiece ? 'masterpiece-card masterpiece-glow' : '';
+                const masterpieceBadge = isMasterpiece ? `
+                    <div class="absolute top-3 left-3 masterpiece-badge px-2 py-1 rounded-md text-xs z-10">
+                        <i class="fas fa-crown mr-1"></i>OBRA PRIMA
+                    </div>
+                ` : '';
+
+                const typeInfo = getTypeInfo(item.type);
+                const typeBadge = `
+                    <div class="absolute top-3 right-3 type-badge ${typeInfo.badgeClass} px-2 py-1 text-xs z-10">
+                        <i class="fas ${typeInfo.icon} mr-1"></i>${typeInfo.text}
+                    </div>
+                `;
+
+                const mediaHtml = `
+                    <div class="media-card bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden relative ${masterpieceClass}" data-id="${item.id}">
+                        ${masterpieceBadge}
+                        ${typeBadge}
+                        <div class="h-48 overflow-hidden">
+                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-gray-900 mb-2 text-sm truncate">${item.title}</h3>
+                            <div class="mb-3 flex flex-wrap gap-1">
+                                <span class="text-xs ${item.type === 'filme' ? 'text-blue-600 bg-blue-100' : 'text-purple-600 bg-purple-100'} px-2 py-1 rounded">
+                                    <i class="fas ${typeInfo.icon} mr-1"></i>${item.type === 'filme' ? 'Filme' : 'Série'}
+                                </span>
+                                <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">${item.genre}</span>
+                                ${isMasterpiece ? '<span class="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded"><i class="fas fa-crown mr-1"></i>Obra Prima</span>' : ''}
+                            </div>
+                            <div class="star-rating text-yellow-500">
+                                ${createStars(item.rating)}
+                            </div>
+                            <div class="mt-3 flex items-center text-xs text-gray-500">
+                                <i class="far fa-calendar mr-1"></i> ${item.year}
+                                <span class="mx-2">•</span>
+                                <i class="fas ${typeInfo.icon} ${item.type === 'filme' ? 'director-icon' : 'duration-icon'} mr-1"></i>
+                                <span>${item.duration}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.append(mediaHtml);
+            });
+
+            // Atualizar informações da página
+            updatePageInfo();
+            updatePaginationControls();
+
+            // Configurar eventos de clique nos cards
+            setupMediaCardEvents();
+        }
+
+        // Função para configurar eventos nos cards
+        function setupMediaCardEvents() {
+            $('.media-card').on('click', function () {
+                const mediaId = $(this).data('id');
+                const item = media.find(m => m.id === mediaId);
+
+                if (item) {
+                    const typeInfo = getTypeInfo(item.type);
+
+                    // Preencher modal
+                    $('#modal-title').text(item.title);
+                    $('#modal-description').text(item.description);
+                    $('#modal-review').text(item.review);
+                    $('#modal-recommendation').text(item.recommendation);
+                    $('#modal-genre').text(item.genre);
+                    $('#modal-year').text(item.year);
+                    $('#modal-director').text(item.director);
+                    $('#modal-duration').text(item.duration);
+                    $('#modal-rating').html(createStars(item.rating));
+                    $('#modal-image').attr('src', item.image);
+
+                    // Configurar badge do tipo
+                    const typeBadge = $('#modal-type-badge');
+                    typeBadge.removeClass().addClass(`ml-4 type-badge px-3 py-1 rounded-full text-xs ${typeInfo.badgeClass}`);
+                    typeBadge.html(`<i class="fas ${typeInfo.icon} mr-1"></i>${typeInfo.text}`);
+
+                    // Mostrar ou esconder campos específicos
+                    if (item.type === 'filme') {
+                        $('#modal-director-container').show();
+                        $('#modal-duration-container').show();
+                        $('#modal-director').text(item.director);
+                        $('#modal-duration').text(item.duration);
+                    } else {
+                        $('#modal-director-container').show();
+                        $('#modal-duration-container').show();
+                        $('#modal-director').text(item.director);
+                        $('#modal-duration').text(item.duration);
+                    }
+
+                    // Mostrar ou esconder badge de obra prima
+                    if (item.masterpiece) {
+                        $('#modal-masterpiece-badge').removeClass('hidden');
+                        $('#modal-status-container').removeClass('hidden');
+                    } else {
+                        $('#modal-masterpiece-badge').addClass('hidden');
+                        $('#modal-status-container').addClass('hidden');
+                    }
+
+                    // Preencher likes
+                    const likesContainer = $('#modal-likes');
+                    likesContainer.empty();
+                    item.likes.forEach(like => {
+                        likesContainer.append(`
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                                <span>${like}</span>
+                            </li>
+                        `);
+                    });
+
+                    // Mostrar modal
+                    $('#media-modal').addClass('active');
+                }
+            });
+        }
+
+        // Função para mudar de página
+        function goToPage(page) {
+            if (page < 1 || page > totalPages) return;
+
+            currentPage = page;
+            loadCurrentPageMedia();
+
+            // Rolar para o topo da seção
+            $('html, body').animate({
+                scrollTop: $('.container').offset().top - 100
+            }, 300);
+        }
+
+        // Inicializar quando carregar
+        $(document).ready(function () {
+            // Calcular total de páginas
+            totalPages = Math.ceil(media.length / mediaPerPage);
+
+            // Carregar primeira página
+            loadCurrentPageMedia();
+
+            // Configurar eventos de paginação
+            $('#prev-page').on('click', function () {
+                if (!$(this).hasClass('disabled')) {
+                    goToPage(currentPage - 1);
+                }
+            });
+
+            $('#next-page').on('click', function () {
+                if (!$(this).hasClass('disabled')) {
+                    goToPage(currentPage + 1);
+                }
+            });
+
+            // Configurar evento para clicar nos números de página
+            $(document).on('click', '.pagination-btn[data-page]', function () {
+                const page = parseInt($(this).data('page'));
+                goToPage(page);
+            });
+
+            // Configurar evento para mudar quantidade de títulos por página
+            $('#media-per-page').on('change', function () {
+                mediaPerPage = parseInt($(this).val());
+                currentPage = 1;
+                totalPages = Math.ceil(media.length / mediaPerPage);
+                loadCurrentPageMedia();
+            });
+
+            // Fechar modal
+            $('#close-modal').on('click', function () {
+                $('#media-modal').removeClass('active');
+            });
+
+            // Fechar modal ao clicar fora
+            $('#media-modal').on('click', function (e) {
+                if (e.target === this) {
+                    $(this).removeClass('active');
+                }
+            });
+
+            // Fechar modal com tecla ESC
+            $(document).on('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    $('#media-modal').removeClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
