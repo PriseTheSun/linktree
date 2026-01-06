@@ -128,6 +128,10 @@
             background: linear-gradient(135deg, #8b5cf6, #7c3aed);
         }
 
+        .animation-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
         .type-badge {
             color: white;
             font-size: 0.7rem;
@@ -142,6 +146,26 @@
 
         .duration-icon {
             color: #6b7280;
+        }
+
+        .studio-icon {
+            color: #6b7280;
+        }
+
+        /* Filtros */
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(to right, #4b5563, #1f2937);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: #f3f4f6;
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -161,21 +185,52 @@
         <header class="mb-12">
             <h1 class="text-4xl font-bold text-gray-900 mb-4">Filmes & Séries</h1>
             <div class="h-1.5 w-32 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full mb-6"></div>
-            <p class="text-lg text-gray-700">Clique em qualquer filme ou série para ver detalhes e minha avaliação</p>
-            <div class="mt-4 flex items-center text-gray-600">
-                <i class="fas fa-film mr-2"></i>
-                <span id="media-count" class="font-medium">Total de 0 títulos</span>
-                <span class="mx-2">•</span>
-                <i class="fas fa-crown text-yellow-500 mr-2"></i>
-                <span id="masterpiece-count" class="font-medium text-yellow-600">0 obras primas</span>
-                <span class="mx-2">•</span>
-                <i class="fas fa-tv text-blue-500 mr-2"></i>
-                <span id="series-count" class="font-medium text-blue-600">0 séries</span>
-                <span class="mx-2">•</span>
-                <i class="fas fa-clapperboard text-purple-500 mr-2"></i>
-                <span id="films-count" class="font-medium text-purple-600">0 filmes</span>
+            <p class="text-lg text-gray-700">Clique em qualquer título para ver detalhes e minha avaliação</p>
+            <div class="mt-4 flex items-center text-gray-600 flex-wrap gap-4">
+                <div class="flex items-center">
+                    <i class="fas fa-film mr-2"></i>
+                    <span id="media-count" class="font-medium">Total de 0 títulos</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                    <span id="masterpiece-count" class="font-medium text-yellow-600">0 obras primas</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-clapperboard text-blue-500 mr-2"></i>
+                    <span id="films-count" class="font-medium text-blue-600">0 filmes</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-tv text-purple-500 mr-2"></i>
+                    <span id="series-count" class="font-medium text-purple-600">0 séries</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-magic text-green-500 mr-2"></i>
+                    <span id="animation-count" class="font-medium text-green-600">0 animações</span>
+                </div>
             </div>
         </header>
+
+        <!-- Filtros -->
+        <div class="mb-8 p-4 bg-white rounded-xl shadow-sm border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Filtrar por:</h3>
+            <div class="flex flex-wrap gap-2">
+                <button class="filter-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-lg active" data-filter="all">
+                    <i class="fas fa-layer-group mr-2"></i>Todos
+                </button>
+                <button class="filter-btn px-4 py-2 bg-blue-50 text-blue-600 rounded-lg" data-filter="filme">
+                    <i class="fas fa-clapperboard mr-2"></i>Filmes
+                </button>
+                <button class="filter-btn px-4 py-2 bg-purple-50 text-purple-600 rounded-lg" data-filter="série">
+                    <i class="fas fa-tv mr-2"></i>Séries
+                </button>
+                <button class="filter-btn px-4 py-2 bg-green-50 text-green-600 rounded-lg" data-filter="animação">
+                    <i class="fas fa-magic mr-2"></i>Animações
+                </button>
+                <button class="filter-btn px-4 py-2 bg-yellow-50 text-yellow-600 rounded-lg" data-filter="masterpiece">
+                    <i class="fas fa-crown mr-2"></i>Obras Primas
+                </button>
+            </div>
+        </div>
 
         <!-- Grid de Filmes & Séries -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12" id="media-container">
@@ -235,7 +290,7 @@
                     <div class="flex items-center">
                         <h3 class="text-2xl font-bold text-gray-900">Detalhes</h3>
                         <div id="modal-type-badge" class="ml-4 type-badge px-3 py-1 rounded-full text-xs">
-                            <!-- Tipo (Filme/Série) será inserido aqui -->
+                            <!-- Tipo (Filme/Série/Animação) será inserido aqui -->
                         </div>
                         <div id="modal-masterpiece-badge"
                             class="ml-2 masterpiece-badge px-3 py-1 rounded-full text-xs hidden">
@@ -270,14 +325,19 @@
                                 <span id="modal-year"
                                     class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
                             </div>
-                            <div id="modal-director-container">
-                                <p class="text-sm text-gray-600 mb-1">Diretor/Criador</p>
-                                <span id="modal-director"
+                            <div id="modal-creator-container">
+                                <p class="text-sm text-gray-600 mb-1" id="creator-label">Diretor/Criador</p>
+                                <span id="modal-creator"
                                     class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
                             </div>
-                            <div id="modal-duration-container">
-                                <p class="text-sm text-gray-600 mb-1">Duração/Temporadas</p>
-                                <span id="modal-duration"
+                            <div id="modal-info-container">
+                                <p class="text-sm text-gray-600 mb-1" id="info-label">Duração/Temporadas</p>
+                                <span id="modal-info"
+                                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
+                            </div>
+                            <div id="modal-studio-container" class="hidden">
+                                <p class="text-sm text-gray-600 mb-1">Estúdio</p>
+                                <span id="modal-studio"
                                     class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium block"></span>
                             </div>
                             <div id="modal-status-container" class="hidden">
@@ -318,7 +378,7 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-        // Dados dos filmes e séries
+        // Dados dos filmes, séries e animações
         const media = [
             {
                 id: 1,
@@ -336,11 +396,11 @@
                 genre: "Ficção Científica/Drama",
                 type: "filme",
                 year: "2014",
-                director: "Christopher Nolan",
-                duration: "2h 49min",
+                creator: "Christopher Nolan",
+                info: "2h 49min",
                 rating: 5,
                 masterpiece: true,
-                image: "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                image: "../images/film_interestelar.avif"
             },
             {
                 id: 2,
@@ -358,8 +418,8 @@
                 genre: "Drama/Crime",
                 type: "série",
                 year: "2008-2013",
-                director: "Vince Gilligan",
-                duration: "5 temporadas",
+                creator: "Vince Gilligan",
+                info: "5 temporadas",
                 rating: 5,
                 masterpiece: true,
                 image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
@@ -380,33 +440,34 @@
                 genre: "Fantasia/Aventura",
                 type: "filme",
                 year: "2003",
-                director: "Peter Jackson",
-                duration: "3h 21min",
+                creator: "Peter Jackson",
+                info: "3h 21min",
                 rating: 5,
                 masterpiece: true,
                 image: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 4,
-                title: "Dark",
-                description: "Uma série alemã de ficção científica que segue quatro famílias interconectadas enquanto elas investigam o desaparecimento de duas crianças na cidade de Winden, revelando segredos sombrios que abrangem várias gerações.",
-                review: "A série mais complexa e bem planejada que já vi. A linha do tempo intrincada, as relações familiares e os paradoxos temporais são magistralmente tecidos. A atenção aos detalhes é impressionante.",
+                title: "Spirited Away (A Viagem de Chihiro)",
+                description: "Uma jovem garota chamada Chihiro entra em um mundo mágico dominado por deuses, bruxas e espíritos, onde humanos são transformados em animais.",
+                review: "Uma das obras-primas mais belas da animação mundial. A criatividade de Hayao Miyazaki brilha em cada frame, criando um mundo fantástico que é ao mesmo tempo assustador e maravilhoso.",
                 likes: [
-                    "Roteiro complexo e inteligente",
-                    "Atuações convincentes",
-                    "Fotografia atmosférica",
-                    "Trilha sonora imersiva",
-                    "Conclusão satisfatória e coerente"
+                    "Animação deslumbrante",
+                    "Criatividade e imaginação ilimitadas",
+                    "Personagens memoráveis",
+                    "Mensagens profundas sobre crescimento",
+                    "Mundo ricamente construído"
                 ],
-                recommendation: "Para quem gosta de quebra-cabeças temporais e narrativas não-lineares. Requer atenção total, mas a recompensa vale cada minuto.",
-                genre: "Ficção Científica/Mistério",
-                type: "série",
-                year: "2017-2020",
-                director: "Baran bo Odar e Jantje Friese",
-                duration: "3 temporadas",
+                recommendation: "Obra essencial não apenas para fãs de animação, mas para qualquer amante de cinema.",
+                genre: "Animação/Fantasia",
+                type: "animação",
+                year: "2001",
+                creator: "Hayao Miyazaki",
+                studio: "Studio Ghibli",
+                info: "2h 5min",
                 rating: 5,
                 masterpiece: true,
-                image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 5,
@@ -424,33 +485,34 @@
                 genre: "Comédia/Suspense",
                 type: "filme",
                 year: "2019",
-                director: "Bong Joon-ho",
-                duration: "2h 12min",
+                creator: "Bong Joon-ho",
+                info: "2h 12min",
                 rating: 5,
                 masterpiece: true,
                 image: "https://images.unsplash.com/photo-1489599809516-9827b6d1cf13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 6,
-                title: "Chernobyl",
-                description: "Minissérie que reconta a história do desastre nuclear de Chernobyl em 1986 e os sacrifícios heróicos feitos para salvar a Europa de uma catástrofe inimaginável.",
-                review: "Uma experiência angustiante e educativa. A reconstrução histórica é meticulosa, e a sensação de terror burocrático e heroísmo pessoal é palpável.",
+                title: "Arcane",
+                description: "Baseada no universo de League of Legends, esta série animada segue as origens de duas irmãs legendárias e o poder que as divide.",
+                review: "Uma revolução na animação para adultos. A fusão de animação 2D e 3D cria um estilo visual único, enquanto a narrativa complexa e personagens bem desenvolvidos elevam o gênero.",
                 likes: [
-                    "Precisão histórica",
-                    "Atuações poderosas",
-                    "Direção atmosférica",
-                    "Tensão constante",
-                    "Importância educativa"
+                    "Estilo visual inovador",
+                    "Desenvolvimento de personagens profundo",
+                    "Narrativa emocional poderosa",
+                    "Trilha sonora excelente",
+                    "Representação de conflitos sociais"
                 ],
-                recommendation: "Uma lição importante sobre os perigos do poder e da negligência, contada de forma magistral.",
-                genre: "Drama/Histórico",
-                type: "série",
-                year: "2019",
-                director: "Johan Renck",
-                duration: "5 episódios",
+                recommendation: "Mesmo sem conhecer League of Legends, esta série é uma experiência visual e narrativa obrigatória.",
+                genre: "Animação/Ação",
+                type: "animação",
+                year: "2021",
+                creator: "Christian Linke e Alex Yee",
+                studio: "Fortiche Production",
+                info: "1 temporada",
                 rating: 5,
                 masterpiece: true,
-                image: "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 7,
@@ -468,33 +530,34 @@
                 genre: "Ficção Científica/Noir",
                 type: "filme",
                 year: "2017",
-                director: "Denis Villeneuve",
-                duration: "2h 44min",
+                creator: "Denis Villeneuve",
+                info: "2h 44min",
                 rating: 4,
                 masterpiece: false,
                 image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 8,
-                title: "The Office (US)",
-                description: "Mockumentary sobre o cotidiano dos funcionários do escritório da Dunder Mifflin Paper Company em Scranton, Pensilvânia.",
-                review: "Comédia inteligente com personagens carismáticos. A evolução ao longo das temporadas é natural, e os momentos cômicos são genuínos.",
+                title: "Attack on Titan",
+                description: "Em um mundo onde a humanidade vive dentro de cidades cercadas por enormes muralhas para se proteger de Titãs gigantes, um jovem jura erradicar os Titãs após sua mãe ser devorada.",
+                review: "Uma das séries mais ambiciosas e bem escritas da animação moderna. A complexidade da trama, desenvolvimento de personagens e reviravoltas são de tirar o fôlego.",
                 likes: [
-                    "Personagens memoráveis",
-                    "Humor inteligente e repetível",
-                    "Evolução natural da série",
-                    "Momento icônicos",
-                    "Final satisfatório"
+                    "Narrativa complexa e imprevisível",
+                    "Desenvolvimento de personagens excepcional",
+                    "Temas filosóficos profundos",
+                    "Animação de ação impressionante",
+                    "Evolução constante da história"
                 ],
-                recommendation: "Comédia perfeita para assistir repetidamente. Os personagens crescem em você.",
-                genre: "Comédia/Mockumentary",
-                type: "série",
-                year: "2005-2013",
-                director: "Greg Daniels",
-                duration: "9 temporadas",
-                rating: 4,
-                masterpiece: false,
-                image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                recommendation: "Uma jornada épica que recompensa a paciência do espectador com uma das conclusões mais satisfatórias da animação.",
+                genre: "Animação/Ação",
+                type: "animação",
+                year: "2013-2023",
+                creator: "Hajime Isayama",
+                studio: "Wit Studio / MAPPA",
+                info: "4 temporadas",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 9,
@@ -512,14 +575,37 @@
                 genre: "Crime/Drama",
                 type: "filme",
                 year: "1972",
-                director: "Francis Ford Coppola",
-                duration: "2h 55min",
+                creator: "Francis Ford Coppola",
+                info: "2h 55min",
                 rating: 5,
                 masterpiece: true,
                 image: "https://images.unsplash.com/photo-1497124401559-3e75ec2ed794?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             },
             {
                 id: 10,
+                title: "Your Name (Kimi no Na wa)",
+                description: "Dois adolescentes, um menino da cidade e uma menina do interior, misteriosamente começam a trocar de corpo e devem encontrar uma maneira de se comunicar.",
+                review: "Uma obra de arte visual e emocional. A animação é deslumbrante, a história é original e emocionante, e a trilha sonora é perfeita.",
+                likes: [
+                    "Animação visualmente deslumbrante",
+                    "História original e emocionante",
+                    "Desenvolvimento de personagens cativante",
+                    "Trilha sonora memorável",
+                    "Conclusão satisfatória"
+                ],
+                recommendation: "Um filme que transcende a animação e se torna uma experiência emocional universal.",
+                genre: "Animação/Romance",
+                type: "animação",
+                year: "2016",
+                creator: "Makoto Shinkai",
+                studio: "CoMix Wave Films",
+                info: "1h 46min",
+                rating: 5,
+                masterpiece: true,
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 11,
                 title: "Stranger Things",
                 description: "Quando um garoto desaparece, uma pequena cidade descobre um mistério envolvendo experimentos secretos, forças sobrenaturais e uma garota estranha.",
                 review: "Homenagem amorosa aos anos 80 com suspense sobrenatural. A química entre os jovens atores é excelente.",
@@ -534,26 +620,125 @@
                 genre: "Ficção Científica/Suspense",
                 type: "série",
                 year: "2016-presente",
-                director: "Irmãos Duffer",
-                duration: "4 temporadas",
+                creator: "Irmãos Duffer",
+                info: "4 temporadas",
                 rating: 4,
                 masterpiece: false,
                 image: "https://images.unsplash.com/photo-1489599809516-9827b6d1cf13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 12,
+                title: "Demon Slayer: Kimetsu no Yaiba",
+                description: "Após sua família ser massacrada por demônios, Tanjiro Kamado se junta aos Caçadores de Demônios para transformar sua irmã Nezuko, que se tornou um demônio, de volta em humana.",
+                review: "Uma revolução visual na indústria da animação. Os combates são coreografados como danças e a animação é frequentemente cinematográfica.",
+                likes: [
+                    "Animação de ação revolucionária",
+                    "Design de personagens marcante",
+                    "Desenvolvimento emocional eficaz",
+                    "Mundo rico em folclore japonês",
+                    "Combates visualmente espetaculares"
+                ],
+                recommendation: "Para quem busca ação espetacular e animação de qualidade excepcional.",
+                genre: "Animação/Ação",
+                type: "animação",
+                year: "2019-presente",
+                creator: "Koyoharu Gotouge",
+                studio: "ufotable",
+                info: "3 temporadas",
+                rating: 4,
+                masterpiece: false,
+                image: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
             }
         ];
 
-        // Variáveis de estado da paginação
+        // Variáveis de estado
         let currentPage = 1;
         let mediaPerPage = 8;
-        let totalPages = Math.ceil(media.length / mediaPerPage);
+        let totalPages = 1;
+        let currentFilter = 'all';
+        let filteredMedia = [...media];
 
-        // Função para contar obras primas, séries e filmes
+        // Função para contar estatísticas
         function countStats() {
             const masterpieces = media.filter(item => item.masterpiece).length;
-            const series = media.filter(item => item.type === 'série').length;
             const films = media.filter(item => item.type === 'filme').length;
+            const series = media.filter(item => item.type === 'série').length;
+            const animations = media.filter(item => item.type === 'animação').length;
 
-            return { masterpieces, series, films };
+            return { masterpieces, films, series, animations };
+        }
+
+        // Função para aplicar filtro
+        function applyFilter(filter) {
+            currentFilter = filter;
+
+            if (filter === 'all') {
+                filteredMedia = [...media];
+            } else if (filter === 'masterpiece') {
+                filteredMedia = media.filter(item => item.masterpiece);
+            } else {
+                filteredMedia = media.filter(item => item.type === filter);
+            }
+
+            // Atualizar contadores no cabeçalho
+            const stats = countStats();
+            $('#films-count').text(`${stats.films} filmes`);
+            $('#series-count').text(`${stats.series} séries`);
+            $('#animation-count').text(`${stats.animations} animações`);
+
+            // Atualizar contador geral com base no filtro
+            const filteredStats = {
+                'all': media.length,
+                'filme': stats.films,
+                'série': stats.series,
+                'animação': stats.animations,
+                'masterpiece': stats.masterpieces
+            };
+
+            $('#media-count').text(`Total de ${filteredStats[filter]} títulos`);
+
+            // Atualizar botões de filtro
+            $('.filter-btn').removeClass('active');
+            $(`.filter-btn[data-filter="${filter}"]`).addClass('active');
+
+            // Resetar para primeira página e recarregar
+            currentPage = 1;
+            totalPages = Math.ceil(filteredMedia.length / mediaPerPage);
+            loadCurrentPageMedia();
+        }
+
+        // Função para obter ícone e cor do tipo
+        function getTypeInfo(type) {
+            switch (type) {
+                case 'filme':
+                    return {
+                        icon: 'fa-clapperboard',
+                        color: 'bg-blue-500',
+                        badgeClass: 'film-badge',
+                        text: 'FILME'
+                    };
+                case 'série':
+                    return {
+                        icon: 'fa-tv',
+                        color: 'bg-purple-500',
+                        badgeClass: 'series-badge',
+                        text: 'SÉRIE'
+                    };
+                case 'animação':
+                    return {
+                        icon: 'fa-magic',
+                        color: 'bg-green-500',
+                        badgeClass: 'animation-badge',
+                        text: 'ANIMAÇÃO'
+                    };
+                default:
+                    return {
+                        icon: 'fa-film',
+                        color: 'bg-gray-500',
+                        badgeClass: 'bg-gray-500',
+                        text: type.toUpperCase()
+                    };
+            }
         }
 
         // Função para criar estrelas
@@ -569,50 +754,29 @@
             return starsHtml;
         }
 
-        // Função para obter ícone e cor do tipo
-        function getTypeInfo(type) {
-            if (type === 'filme') {
-                return {
-                    icon: 'fa-clapperboard',
-                    color: 'bg-blue-500',
-                    badgeClass: 'film-badge',
-                    text: 'FILME'
-                };
-            } else {
-                return {
-                    icon: 'fa-tv',
-                    color: 'bg-purple-500',
-                    badgeClass: 'series-badge',
-                    text: 'SÉRIE'
-                };
-            }
-        }
-
-        // Função para atualizar as informações da página
+        // Função para atualizar informações da página
         function updatePageInfo() {
             const startIndex = (currentPage - 1) * mediaPerPage + 1;
-            const endIndex = Math.min(currentPage * mediaPerPage, media.length);
+            const endIndex = Math.min(currentPage * mediaPerPage, filteredMedia.length);
 
             $('#page-info').text(`${startIndex}-${endIndex}`);
-            $('#total-media').text(media.length);
-            $('#media-count').text(`Total de ${media.length} títulos`);
-
-            const stats = countStats();
-            $('#masterpiece-count').text(`${stats.masterpieces} obras primas`);
-            $('#series-count').text(`${stats.series} séries`);
-            $('#films-count').text(`${stats.films} filmes`);
+            $('#total-media').text(filteredMedia.length);
         }
 
-        // Função para atualizar os controles de paginação
+        // Função para atualizar controles de paginação
         function updatePaginationControls() {
             const pageNumbersContainer = $('#page-numbers');
             pageNumbersContainer.empty();
 
-            // Calcular quais números de página mostrar
+            if (totalPages <= 1) {
+                $('#prev-page').addClass('disabled');
+                $('#next-page').addClass('disabled');
+                return;
+            }
+
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, currentPage + 2);
 
-            // Ajustar para mostrar sempre 5 páginas quando possível
             if (endPage - startPage < 4) {
                 if (startPage === 1) {
                     endPage = Math.min(totalPages, startPage + 4);
@@ -621,7 +785,6 @@
                 }
             }
 
-            // Adicionar botão para primeira página se necessário
             if (startPage > 1) {
                 pageNumbersContainer.append(`
                     <button class="pagination-btn px-3 py-2 rounded-lg hover:bg-gray-200" data-page="1">1</button>
@@ -629,14 +792,12 @@
                 `);
             }
 
-            // Adicionar números das páginas
             for (let i = startPage; i <= endPage; i++) {
                 pageNumbersContainer.append(`
                     <button class="pagination-btn px-3 py-2 rounded-lg ${i === currentPage ? 'active' : 'hover:bg-gray-200'}" data-page="${i}">${i}</button>
                 `);
             }
 
-            // Adicionar botão para última página se necessário
             if (endPage < totalPages) {
                 pageNumbersContainer.append(`
                     ${endPage < totalPages - 1 ? '<span class="px-2">...</span>' : ''}
@@ -644,25 +805,33 @@
                 `);
             }
 
-            // Atualizar estado dos botões de navegação
             $('#prev-page').toggleClass('disabled', currentPage === 1);
             $('#next-page').toggleClass('disabled', currentPage === totalPages);
-
-            // Atualizar o seletor de media por página
             $('#media-per-page').val(mediaPerPage);
         }
 
-        // Função para carregar os títulos da página atual
+        // Função para carregar títulos da página atual
         function loadCurrentPageMedia() {
             const container = $('#media-container');
             container.empty();
 
-            // Calcular índices dos títulos a mostrar
             const startIndex = (currentPage - 1) * mediaPerPage;
-            const endIndex = Math.min(startIndex + mediaPerPage, media.length);
-            const mediaToShow = media.slice(startIndex, endIndex);
+            const endIndex = Math.min(startIndex + mediaPerPage, filteredMedia.length);
+            const mediaToShow = filteredMedia.slice(startIndex, endIndex);
 
-            // Adicionar cards dos títulos
+            if (mediaToShow.length === 0) {
+                container.html(`
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-film text-gray-300 text-6xl mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Nenhum título encontrado</h3>
+                        <p class="text-gray-500">Tente mudar o filtro para ver mais conteúdos.</p>
+                    </div>
+                `);
+                updatePageInfo();
+                updatePaginationControls();
+                return;
+            }
+
             mediaToShow.forEach(item => {
                 const isMasterpiece = item.masterpiece || false;
                 const masterpieceClass = isMasterpiece ? 'masterpiece-card masterpiece-glow' : '';
@@ -689,8 +858,8 @@
                         <div class="p-5">
                             <h3 class="font-bold text-gray-900 mb-2 text-sm truncate">${item.title}</h3>
                             <div class="mb-3 flex flex-wrap gap-1">
-                                <span class="text-xs ${item.type === 'filme' ? 'text-blue-600 bg-blue-100' : 'text-purple-600 bg-purple-100'} px-2 py-1 rounded">
-                                    <i class="fas ${typeInfo.icon} mr-1"></i>${item.type === 'filme' ? 'Filme' : 'Série'}
+                                <span class="text-xs ${typeInfo.badgeClass.replace('badge', '600')} ${typeInfo.badgeClass.replace('badge', '100')} px-2 py-1 rounded">
+                                    <i class="fas ${typeInfo.icon} mr-1"></i>${typeInfo.text}
                                 </span>
                                 <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">${item.genre}</span>
                                 ${isMasterpiece ? '<span class="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded"><i class="fas fa-crown mr-1"></i>Obra Prima</span>' : ''}
@@ -701,8 +870,8 @@
                             <div class="mt-3 flex items-center text-xs text-gray-500">
                                 <i class="far fa-calendar mr-1"></i> ${item.year}
                                 <span class="mx-2">•</span>
-                                <i class="fas ${typeInfo.icon} ${item.type === 'filme' ? 'director-icon' : 'duration-icon'} mr-1"></i>
-                                <span>${item.duration}</span>
+                                <i class="fas ${typeInfo.icon} mr-1"></i>
+                                <span>${item.info}</span>
                             </div>
                         </div>
                     </div>
@@ -710,11 +879,8 @@
                 container.append(mediaHtml);
             });
 
-            // Atualizar informações da página
             updatePageInfo();
             updatePaginationControls();
-
-            // Configurar eventos de clique nos cards
             setupMediaCardEvents();
         }
 
@@ -734,8 +900,8 @@
                     $('#modal-recommendation').text(item.recommendation);
                     $('#modal-genre').text(item.genre);
                     $('#modal-year').text(item.year);
-                    $('#modal-director').text(item.director);
-                    $('#modal-duration').text(item.duration);
+                    $('#modal-creator').text(item.creator);
+                    $('#modal-info').text(item.info);
                     $('#modal-rating').html(createStars(item.rating));
                     $('#modal-image').attr('src', item.image);
 
@@ -744,17 +910,20 @@
                     typeBadge.removeClass().addClass(`ml-4 type-badge px-3 py-1 rounded-full text-xs ${typeInfo.badgeClass}`);
                     typeBadge.html(`<i class="fas ${typeInfo.icon} mr-1"></i>${typeInfo.text}`);
 
-                    // Mostrar ou esconder campos específicos
-                    if (item.type === 'filme') {
-                        $('#modal-director-container').show();
-                        $('#modal-duration-container').show();
-                        $('#modal-director').text(item.director);
-                        $('#modal-duration').text(item.duration);
-                    } else {
-                        $('#modal-director-container').show();
-                        $('#modal-duration-container').show();
-                        $('#modal-director').text(item.director);
-                        $('#modal-duration').text(item.duration);
+                    // Configurar labels e campos específicos
+                    if (item.type === 'animação') {
+                        $('#creator-label').text('Diretor/Criador');
+                        $('#info-label').text('Duração/Temporadas');
+                        $('#modal-studio').text(item.studio);
+                        $('#modal-studio-container').removeClass('hidden');
+                    } else if (item.type === 'filme') {
+                        $('#creator-label').text('Diretor');
+                        $('#info-label').text('Duração');
+                        $('#modal-studio-container').addClass('hidden');
+                    } else if (item.type === 'série') {
+                        $('#creator-label').text('Criador');
+                        $('#info-label').text('Temporadas');
+                        $('#modal-studio-container').addClass('hidden');
                     }
 
                     // Mostrar ou esconder badge de obra prima
@@ -791,7 +960,6 @@
             currentPage = page;
             loadCurrentPageMedia();
 
-            // Rolar para o topo da seção
             $('html, body').animate({
                 scrollTop: $('.container').offset().top - 100
             }, 300);
@@ -799,13 +967,23 @@
 
         // Inicializar quando carregar
         $(document).ready(function () {
-            // Calcular total de páginas
-            totalPages = Math.ceil(media.length / mediaPerPage);
+            // Inicializar estatísticas
+            const stats = countStats();
+            $('#masterpiece-count').text(`${stats.masterpieces} obras primas`);
+            $('#films-count').text(`${stats.films} filmes`);
+            $('#series-count').text(`${stats.series} séries`);
+            $('#animation-count').text(`${stats.animations} animações`);
 
-            // Carregar primeira página
-            loadCurrentPageMedia();
+            // Aplicar filtro inicial
+            applyFilter('all');
 
-            // Configurar eventos de paginação
+            // Eventos de filtro
+            $('.filter-btn').on('click', function () {
+                const filter = $(this).data('filter');
+                applyFilter(filter);
+            });
+
+            // Eventos de paginação
             $('#prev-page').on('click', function () {
                 if (!$(this).hasClass('disabled')) {
                     goToPage(currentPage - 1);
@@ -818,33 +996,29 @@
                 }
             });
 
-            // Configurar evento para clicar nos números de página
             $(document).on('click', '.pagination-btn[data-page]', function () {
                 const page = parseInt($(this).data('page'));
                 goToPage(page);
             });
 
-            // Configurar evento para mudar quantidade de títulos por página
             $('#media-per-page').on('change', function () {
                 mediaPerPage = parseInt($(this).val());
                 currentPage = 1;
-                totalPages = Math.ceil(media.length / mediaPerPage);
+                totalPages = Math.ceil(filteredMedia.length / mediaPerPage);
                 loadCurrentPageMedia();
             });
 
-            // Fechar modal
+            // Eventos do modal
             $('#close-modal').on('click', function () {
                 $('#media-modal').removeClass('active');
             });
 
-            // Fechar modal ao clicar fora
             $('#media-modal').on('click', function (e) {
                 if (e.target === this) {
                     $(this).removeClass('active');
                 }
             });
 
-            // Fechar modal com tecla ESC
             $(document).on('keydown', function (e) {
                 if (e.key === 'Escape') {
                     $('#media-modal').removeClass('active');
