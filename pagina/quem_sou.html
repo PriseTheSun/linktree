@@ -29,6 +29,11 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
+        .tech-category {
+            border-left: 4px solid #4f46e5;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -161,9 +166,9 @@
                         <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-6">Sobre Mim</h3>
                         <div class="space-y-6">
                             <p class="text-gray-700 leading-relaxed">
-                                Sou um desenvolvedor Full Stack com mais de 5 anos de experiência, especializado em
-                                WordPress e desenvolvimento front-end. Combino habilidades técnicas sólidas com um olhar
-                                atento para design e usabilidade, criando soluções que são tanto funcionais quanto
+                                Desenvolvedor Front-End com mais de 5 anos de experiência, especializado em
+                                desenvolvimento front-end e Web Design. Combino habilidades técnicas sólidas com um
+                                olhar atento para design e usabilidade, criando soluções que são tanto funcionais quanto
                                 visualmente atraentes.
                             </p>
                             <p class="text-gray-700 leading-relaxed">
@@ -183,35 +188,35 @@
                                 <div class="flex items-center mb-5">
                                     <div
                                         class="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 shadow-md">
-                                        <i class="fab fa-html5 text-white text-xl md:text-2xl"></i>
+                                        <i class="fab fa-js text-white text-xl md:text-2xl"></i>
                                     </div>
-                                    <h4 class="text-lg md:text-xl font-bold text-gray-900">Front-End</h4>
+                                    <h4 class="text-lg md:text-xl font-bold text-gray-900">Front-End Moderno</h4>
                                 </div>
-                                <p class="text-gray-700 mb-5">Desenvolvimento de interfaces modernas e responsivas</p>
+                                <p class="text-gray-700 mb-5">Desenvolvimento com frameworks e bibliotecas modernas</p>
                                 <div class="flex flex-wrap gap-3">
                                     <div class="tech-icon w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center"
-                                        title="HTML5">
-                                        <i class="devicon-html5-plain colored text-xl"></i>
+                                        title="Vue.js">
+                                        <i class="devicon-vuejs-plain colored text-xl"></i>
                                     </div>
-                                    <div class="tech-icon w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center"
-                                        title="CSS3">
-                                        <i class="devicon-css3-plain colored text-xl"></i>
+                                    <div class="tech-icon w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center"
+                                        title="Nuxt.js">
+                                        <i class="devicon-nuxtjs-plain colored text-xl"></i>
                                     </div>
-                                    <div class="tech-icon w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center"
-                                        title="JavaScript">
-                                        <i class="devicon-javascript-plain colored text-xl"></i>
+                                    <div class="tech-icon w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"
+                                        title="React.js">
+                                        <i class="devicon-react-plain colored text-xl"></i>
+                                    </div>
+                                    <div class="tech-icon w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center"
+                                        title="Next.js">
+                                        <i class="devicon-nextjs-plain colored text-xl"></i>
                                     </div>
                                     <div class="tech-icon w-10 h-10 bg-teal-50 rounded-lg flex items-center justify-center"
                                         title="Tailwind">
                                         <i class="devicon-tailwindcss-plain colored text-xl"></i>
                                     </div>
-                                    <div class="tech-icon w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center"
-                                        title="Vue.js">
-                                        <i class="devicon-vuejs-plain colored text-xl"></i>
-                                    </div>
                                 </div>
-                                <p class="text-sm text-gray-600 mt-4">HTML, CSS, JavaScript (ES6+), Tailwind, Bootstrap,
-                                    Vuetify, Vue.js, API REST</p>
+                                <p class="text-sm text-gray-600 mt-4">Vue.js, Nuxt.js, React.js, Next.js, Tailwind, API
+                                    REST, Componentização</p>
                             </div>
 
 
@@ -235,11 +240,11 @@
                                     </div>
                                     <div class="tech-icon w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center"
                                         title="Elementor">
-                                        <i class="fas fa-th text-orange-500 text-xl"></i>
+                                        <img src="../images/elementor.avif" alt="elementor" class="w-4">
                                     </div>
                                     <div class="tech-icon w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center"
                                         title="Gutenberg">
-                                        <i class="fas fa-cubes text-blue-500 text-xl"></i>
+                                        <img src="../images/gutenberg.avif" alt="elementor" class="w-4">
                                     </div>
                                     <div class="tech-icon w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center"
                                         title="ACF">
@@ -270,10 +275,13 @@
                                         title="GIMP">
                                         <i class="devicon-gimp-plain colored text-xl"></i>
                                     </div>
+                                    <div class="tech-icon w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center"
+                                        title="Framer">
+                                        <img src="../images/frammer.avif" alt="elementor" class="w-4">
+                                    </div>
                                 </div>
                                 <p class="text-sm text-gray-600 mt-4">Criação de interfaces no Figma, edição de imagens
-                                    com GIMP, foco em
-                                    usabilidade e acessibilidade</p>
+                                    com GIMP, foco em usabilidade e acessibilidade</p>
                             </div>
 
 
@@ -316,154 +324,193 @@
 
         <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
             <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-8">Tecnologias e Ferramentas</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-html5-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">HTML5</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-css3-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">CSS3</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-javascript-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">JavaScript</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-jquery-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">jQuery</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-wordpress-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">WordPress</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-php-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">PHP</span>
-                </div>
 
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-vuejs-plain colored text-2xl md:text-3xl"></i>
+            <!-- Categoria: Frameworks JavaScript Modernos -->
+            <div class="tech-category mb-10">
+                <h4 class="text-lg font-bold text-gray-800 mb-6">Frameworks & Bibliotecas JavaScript</h4>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-vuejs-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Vue.js</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Vue.js</span>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-green-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-nuxtjs-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Nuxt.js</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-react-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">React.js</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-nextjs-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Next.js</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-javascript-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">JavaScript</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-yellow-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-jquery-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">jQuery</span>
+                    </div>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-bulma-plain colored text-2xl md:text-3xl"></i>
+            </div>
+
+            <!-- Categoria: WordPress & CMS -->
+            <div class="tech-category mb-10">
+                <h4 class="text-lg font-bold text-gray-800 mb-6">WordPress & CMS</h4>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-wordpress-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">WordPress</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Bulma</span>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-purple-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-php-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">PHP</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-orange-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <img src="../images/elementor.avif" alt="elementor" class="w-8">
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Elementor</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <span class="font-bold text-gray-800 text-lg md:text-xl">ACF</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">ACF</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <img src="../images/gutenberg.avif" alt="elementor" class="w-8">
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Gutenberg</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-green-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <img src="../images/crocoblock.svg" alt="elementor" class="w-16">
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Crocoblock</span>
+                    </div>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="fas fa-cubes text-purple-500 text-2xl md:text-3xl"></i>
+            </div>
+
+            <!-- Categoria: Estilização & CSS -->
+            <div class="tech-category mb-10">
+                <h4 class="text-lg font-bold text-gray-800 mb-6">Estilização & CSS Frameworks</h4>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-tailwindcss-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Tailwind</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Materialize</span>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-bulma-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Bulma</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-purple-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <img src="../images/Materialize.avif" alt="elementor" class="w-8">
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Materialize</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-vuetify-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Vuetify</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-pink-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-sass-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Sass</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-less-plain-wordmark colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Less</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-css3-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">CSS3</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-orange-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-html5-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">HTML5</span>
+                    </div>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-vuetify-plain colored text-2xl md:text-3xl"></i>
+            </div>
+
+            <!-- Categoria: Design & UX/UI -->
+            <div class="tech-category">
+                <h4 class="text-lg font-bold text-gray-800 mb-6">Design & UX/UI</h4>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-pink-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-figma-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Figma</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Vuetify</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-react-plain colored text-2xl md:text-3xl"></i>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-purple-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <img src="../images/frammer.avif" alt="elementor" class="w-8">
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">Framer</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">React.js</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-nextjs-plain colored text-2xl md:text-3xl"></i>
+                    <div class="flex flex-col items-center">
+                        <div
+                            class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-green-50 rounded-xl flex items-center justify-center mb-3 shadow-md">
+                            <i class="devicon-gimp-plain colored text-2xl md:text-3xl"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700 text-center">GIMP</span>
                     </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Next.js</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-figma-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Figma</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="fas fa-magic text-pink-500 text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Framer</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-sass-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Sass</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-less-plain-wordmark colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Less</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="fas fa-th text-orange-500 text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Elementor</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <span class="font-bold text-gray-800 text-lg md:text-xl">ACF</span>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">ACF</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="fas fa-cubes text-blue-500 text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Gutenberg</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="fas fa-puzzle-piece text-green-500 text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">Crocoblock</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div
-                        class="tech-icon w-14 h-14 md:w-16 md:h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 shadow-md">
-                        <i class="devicon-gimp-plain colored text-2xl md:text-3xl"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700 text-center">GIMP</span>
                 </div>
             </div>
         </div>
